@@ -36,9 +36,11 @@ def process_delivery(current_total, new_value):
     return current_total + new_value
 
 def calculate_tax(amount):
-    return
+    return amount * 0.1
 
 def generate_report(total_units,failed_attempts):
+    print(f'Total Deliveries Processed: {total_units}')
+    print(f'Number of Failed/Rejected Entries: {failed_attempts}')
     return
 
 # Main Program
@@ -48,9 +50,12 @@ while True:
     user_input, add_inventory, failed_entries = get_valid_input()
 
     if user_input == 'quit':
-        print("Exiting Smart Inventory Auditor.")
+        print("\nExiting Smart Inventory Auditor.")
+        generate_report(inventory, failed_entries)
         break
 
     if add_inventory:
         inventory = process_delivery(inventory, user_input)
-
+        tax = calculate_tax(user_input)
+        print(f'\nDelivery processed: {user_input} units, Tax: ${tax:.2f}')
+        print(f'Current Inventory: {inventory}')
