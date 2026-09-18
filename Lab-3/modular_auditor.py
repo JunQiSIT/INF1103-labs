@@ -3,6 +3,7 @@ inventory = 0
 failed_entries = 0
 
 # Functions
+# Retrieves and validates user input for stock quantity
 def get_valid_input():
     global failed_entries
     global add_inventory
@@ -32,12 +33,15 @@ def get_valid_input():
     # Return user input if it passes validation
     return int(user_input), True, failed_entries
 
+# Processes the delivery by adding the new value to the current total inventory
 def process_delivery(current_total, new_value):
     return current_total + new_value
 
+# Calculates 10% tax on the delivery amount
 def calculate_tax(amount):
     return amount * 0.1
 
+# Generates report of total deliveries processed and number of failed/rejected entries
 def generate_report(total_units,failed_attempts):
     print(f'Total Deliveries Processed: {total_units}')
     print(f'Number of Failed/Rejected Entries: {failed_attempts}')
