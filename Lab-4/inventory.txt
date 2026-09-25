@@ -1,0 +1,6 @@
+1001, chair, 26
+1002, table, 32
+1003, coat, 23
+1004, pop, 45
+1005, generator, 22
+1006, food, 90
