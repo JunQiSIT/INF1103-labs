@@ -4,3 +4,5 @@
 1004, pop, 45
 1005, generator, 22
 1006, food, 90
+1007, msp430, 79
+1008, processor, 98
