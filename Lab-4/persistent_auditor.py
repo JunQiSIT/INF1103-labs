@@ -3,6 +3,7 @@ from pathlib import Path
 # Global Variables
 inventory = 0
 add_inventory = True
+current_orders = []
 
 # Functions
 # Retrieves and validates user input for stock quantity
@@ -13,35 +14,41 @@ def get_valid_input():
     if product_name == 'quit':
         return product_name, None, False
     
-    user_input = input("Enter stock quantity (or type 'quit' to exit): ")
+    quantity_input = input("Enter stock quantity (or type 'quit' to exit): ")
 
     # Checks if input is quit signal to exit the program
-    if user_input == 'quit':
-        return None, user_input, False
+    if quantity_input == 'quit':
+        return None, quantity_input, False
 
     # Checks if the input is a valid integer ignoring the negative sign for validation
     # Afterwards converts user input string to an integer and checks if it is non-negative
     try:
-        if not user_input.lstrip('-').isdigit():
+        if not quantity_input.lstrip('-').isdigit():
             print("Invalid input. Please enter a valid integer or type 'quit' to exit.")
             failed_entries += 1
-            return product_name, user_input, False
-        elif int(user_input) < 0:
+            return product_name, quantity_input, False
+        elif int(quantity_input) < 0:
             print("Invalid input. Please enter a non-negative integer.")
             failed_entries += 1
-            return product_name, user_input, False
+            return product_name, quantity_input, False
 
     except ValueError: # Exception to catch any unexpected errors during conversion e.g. --3
         print("Invalid input. Please enter a valid integer or type 'quit' to exit.")
         failed_entries += 1
-        return product_name, user_input, False
+        return product_name, quantity_input, False
 
     # Return user input if it passes validation
-    return product_name, int(user_input), True
+    return product_name, int(quantity_input), True
 
 # Processes the delivery by adding the new value to the current total inventory
-def process_delivery(current_total, new_value):
-    return current_total + new_value
+def process_delivery(current_order_list: list, order: list):
+    if not current_order_list:
+        order.insert(0,1)
+        current_order_list.append(order)
+    else:
+        order.insert(0, len(current_order_list) + 1)
+        current_order_list.append(order)
+    return
 
 # Generates report of total deliveries processed and number of failed/rejected entries
 def generate_report(total_units):
@@ -51,7 +58,10 @@ def generate_report(total_units):
 # Load inventory from file
 def load_inventory():
     filepath = Path("./orders.txt")
-    filepath.touch(exist_ok=True)
+    try:
+        filepath.touch(exist_ok=True)
+    except Exception as e:
+        return f'Exception occured: {e}'
     return
 
 # Save inventory to file for persistence
@@ -64,15 +74,15 @@ def main():
     # Initialise inventory from file
     load_inventory()
     while True:
-        product_input, user_input, add_inventory = get_valid_input()
+        product_input, quantity_input, add_inventory = get_valid_input()
 
-        if user_input == 'quit' or product_input == 'quit':
+        if quantity_input == 'quit' or product_input == 'quit':
             print("\nExiting Smart Inventory Auditor.")
             generate_report(inventory)
             break
 
         if add_inventory:
-            return
+            process_delivery(current_orders, [product_input, quantity_input])
 
     # Save recorded inventory into file for persistence
     save_inventory()
