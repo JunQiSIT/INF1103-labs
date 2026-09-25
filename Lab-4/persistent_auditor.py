@@ -45,6 +45,7 @@ def process_delivery(current_total, new_value, current_order_list: list, order: 
     elif not current_order_list:
         order.insert(0,'1001')
         current_order_list.append(order)
+    # Use last order index and increment
     else:
         order.insert(0, str(int(current_order_list[-1][0]) + 1))
         current_order_list.append(order)
@@ -63,6 +64,7 @@ def generate_report(total_units,failed_attempts):
 
 # Load inventory from file
 def load_inventory():
+    # Gets the filepath of the current working directory
     filepath = Path(__file__).parent / "inventory.txt"
     try:
         filepath.touch(exist_ok=True)
@@ -82,6 +84,7 @@ def load_inventory():
 
 # Save inventory to file for persistence
 def save_inventory(current_order_list: list):
+    # Gets the filepath of the current working directory
     filepath = Path(__file__).parent / "inventory.txt"
     with open(filepath, "a") as f:
         for order in current_order_list:
