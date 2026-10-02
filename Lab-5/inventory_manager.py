@@ -68,6 +68,7 @@ def save_inventory(running_inventory_data):
     print("Inventory saved Successfully to inventory.json")
     return
 
+# Add new product to inventory
 def add_product(running_inventory_data):
     print("\nAdd New Product")
     new_product = {
@@ -80,6 +81,7 @@ def add_product(running_inventory_data):
     print("Product added successfully!")
     return running_inventory_data
 
+# Update stock of existing product
 def update_stock(running_inventory_data):
     print("\nUpdate Stock")
     product_id = int(input("Enter Product ID: "))
@@ -95,6 +97,7 @@ def update_stock(running_inventory_data):
     print("Product not found.")
     return running_inventory_data
 
+# Search for a product by ID
 def search_product(running_inventory_data):
     print("\nSearch Product")
     search_id = int(input("Enter Product ID: "))
