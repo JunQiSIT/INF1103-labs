@@ -69,22 +69,17 @@ def save_inventory(current_order_list: list):
     print("Order Successfully saved to inventory.json")
     return
 
-def add_product():
+def add_product(stored_inventory_data):
     print("\nAdd New Product")
-    with open(INVENTORY_FILEPATH, "r") as f:
-        inventory_data = json.load(f)
-
     new_product = {
-        "ID": len(inventory_data) + 1,
+        "ID": len(stored_inventory_data) + 1,
         "Name": input("Enter product name: "),
         "Price": float(input("Enter product price: ")),
         "Quantity": int(input("Enter product quantity: "))
     }
-    inventory_data.append(new_product)
-    with open(INVENTORY_FILEPATH, "w") as f:
-        json.dump(inventory_data, f, indent=4)
+    stored_inventory_data.append(new_product)
     print("Product added successfully!")
-    return
+    return stored_inventory_data
 
 def update_stock():
     print("\nUpdate Stock")
@@ -136,7 +131,7 @@ def main():
             case 1:
                 display_all(stored_inventory)
             case 2:
-                add_product()
+                added_inventory = add_product(stored_inventory)
             case 3:
                 update_stock()
             case 4:
