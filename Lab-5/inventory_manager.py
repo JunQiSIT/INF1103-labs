@@ -88,8 +88,9 @@ def update_stock(running_inventory_data):
     for product in running_inventory_data:
         if product["ID"] == product_id:
             print("\nProduct found:")
-            print(f'Name: {product['Name']}')
-            print(f'Current Stock: {product['Quantity']}')
+            print(f"Name: {product['Name']}")
+            print(f"Price: ${product['Price']:.2f}")
+            print(f"Current Stock: {product['Quantity']}")
             new_quantity = int(input("\nNew Stock Quantity: "))
             product["Quantity"] = new_quantity
             print("\nStock updated successfully!")
@@ -105,10 +106,10 @@ def search_product(running_inventory_data):
         if product["ID"] == search_id:
             print("\nProduct found:")
             print("-" * 30)
-            print(f'ID: {product['ID']}')
-            print(f'Name: {product['Name']}')
-            print(f'Price: ${product['Price']:.2f}')
-            print(f'Stock: {product['Quantity']}')
+            print(f"ID: {product['ID']}")
+            print(f"Name: {product['Name']}")
+            print(f"Price: ${product['Price']:.2f}")
+            print(f"Stock: {product['Quantity']}")
             print("-" * 30)
             return
     print("\nProduct not found.")
