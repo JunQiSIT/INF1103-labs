@@ -26,34 +26,39 @@ def inventory_menu():
             return int(user_input)
 
 # Display all inventory items within file
-def display_all():
-    try:
-        with open(INVENTORY_FILEPATH, "r") as f:
-            inventory_data = json.load(f)
-            if not inventory_data:
-                print("\nNo products found in the inventory.")
-                return
-            print("\nCurrent Inventory")
-            print("-" * 50)
-            for product in inventory_data:
-                print(f"ID: {product['ID']} | Name: {product['Name']} | Price: ${product['Price']:.2f} | Stock: {product['Quantity']}")
-            print("-" * 50)
-    except FileNotFoundError:
-        print("\nInventory file not found. Please ensure the inventory.json file exists.")
-    except json.JSONDecodeError:
-        print("\nError decoding JSON from the inventory file. Please check the file format.")
+def display_all(stored_inventory_data):
+    if not stored_inventory_data:
+        print("\nNo products found in the inventory.")
+        return
+    print("\nCurrent Inventory")
+    print("-" * 50)
+    for product in stored_inventory_data:
+        print(f"ID: {product['ID']} | Name: {product['Name']} | Price: ${product['Price']:.2f} | Stock: {product['Quantity']}")
+    print("-" * 50)
     return
 
 # Load inventory from file
 def load_inventory():
-    # Gets the filepath of the current working directory
+    # Creates the inventory.json file if it does not exist
     try:
         INVENTORY_FILEPATH.touch(exist_ok=True)
     except Exception as e:
         return f'Exception occured: {e}'
 
-    print('\ninventory.json file found.')
-    print('Inventory loaded successfully')
+    # Tries to open and load inventory data from the inventory.json file
+    try:
+        with open(INVENTORY_FILEPATH, "r") as f:
+            inventory_data = json.load(f)
+            if not inventory_data:
+                return None
+            else:
+                print('\ninventory.json file found.')
+                print('Inventory loaded successfully')
+                return inventory_data
+    except FileNotFoundError:
+        print("\nInventory file not found. Please ensure the inventory.json file exists.")
+    except json.JSONDecodeError:
+        print("\nError decoding JSON from the inventory file. Please check the file format.")
 
 # Save inventory to file for persistence
 def save_inventory(current_order_list: list):
@@ -129,7 +134,7 @@ def main():
         user_choice = inventory_menu()
         match user_choice:
             case 1:
-                display_all()
+                display_all(stored_inventory)
             case 2:
                 add_product()
             case 3:
