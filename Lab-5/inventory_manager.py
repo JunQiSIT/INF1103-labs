@@ -101,6 +101,21 @@ def update_stock():
     return
 
 def search_product():
+    print("\nSearch Product")
+    with open(INVENTORY_FILEPATH, "r") as f:
+        inventory_data = json.load(f)
+    search_id = int(input("Enter Product ID: "))
+    for product in inventory_data:
+        if product["ID"] == search_id:
+            print("\nProduct found:")
+            print("-" * 30)
+            print(f'ID: {product['ID']}')
+            print(f'Name: {product['Name']}')
+            print(f'Price: ${product['Price']:.2f}')
+            print(f'Stock: {product['Quantity']}')
+            print("-" * 30)
+            return
+    print("\nProduct not found.")
     return
 
 # Main Program
@@ -120,7 +135,7 @@ def main():
             case 3:
                 update_stock()
             case 4:
-                print("Search Product")
+                search_product()
             case 5:
                 print("Save Inventory")
             case 6:
