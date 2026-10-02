@@ -27,6 +27,12 @@
         "ID": 5,
         "Name": "Table",
         "Price": 10.0,
-        "Quantity": 10
+        "Quantity": 100
+    },
+    {
+        "ID": 6,
+        "Name": "mac",
+        "Price": 12.0,
+        "Quantity": 99
     }
 ]

@@ -61,12 +61,11 @@ def load_inventory():
         print("\nError decoding JSON from the inventory file. Please check the file format.")
 
 # Save inventory to file for persistence
-def save_inventory(current_order_list: list):
-    # Gets the filepath of the current working directory
-    with open(INVENTORY_FILEPATH, "a") as f:
-        for order in current_order_list:
-            f.write(", ".join(order) + "\n")
-    print("Order Successfully saved to inventory.json")
+def save_inventory(running_inventory_data):
+    print("\nSaving inventory...")
+    with open(INVENTORY_FILEPATH, "w") as f:
+        json.dump(running_inventory_data, f, indent=4)
+    print("Inventory saved Successfully to inventory.json")
     return
 
 def add_product(running_inventory_data):
@@ -96,12 +95,10 @@ def update_stock(running_inventory_data):
     print("Product not found.")
     return running_inventory_data
 
-def search_product():
+def search_product(running_inventory_data):
     print("\nSearch Product")
-    with open(INVENTORY_FILEPATH, "r") as f:
-        inventory_data = json.load(f)
     search_id = int(input("Enter Product ID: "))
-    for product in inventory_data:
+    for product in running_inventory_data:
         if product["ID"] == search_id:
             print("\nProduct found:")
             print("-" * 30)
@@ -131,17 +128,17 @@ def main():
             case 3:
                 stored_inventory = update_stock(stored_inventory)
             case 4:
-                search_product()
+                search_product(stored_inventory)
             case 5:
-                print("Save Inventory")
+                save_inventory(stored_inventory)
             case 6:
                 print("\nSaving inventory before exit...")
+                
                 # Save inventory to file for persistence
-
+                save_inventory(stored_inventory)
                 print("\nThank you for using the Inventory Management System. Goodbye!")
                 print("Program Terminated.")
                 return
-    
 
 if __name__=="__main__":
     main()
