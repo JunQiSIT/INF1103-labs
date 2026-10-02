@@ -26,13 +26,13 @@ def inventory_menu():
             return int(user_input)
 
 # Display all inventory items within file
-def display_all(stored_inventory_data):
-    if not stored_inventory_data:
+def display_all(running_inventory_data):
+    if not running_inventory_data:
         print("\nNo products found in the inventory.")
         return
     print("\nCurrent Inventory")
     print("-" * 50)
-    for product in stored_inventory_data:
+    for product in running_inventory_data:
         print(f"ID: {product['ID']} | Name: {product['Name']} | Price: ${product['Price']:.2f} | Stock: {product['Quantity']}")
     print("-" * 50)
     return
@@ -69,36 +69,32 @@ def save_inventory(current_order_list: list):
     print("Order Successfully saved to inventory.json")
     return
 
-def add_product(stored_inventory_data):
+def add_product(running_inventory_data):
     print("\nAdd New Product")
     new_product = {
-        "ID": len(stored_inventory_data) + 1,
+        "ID": len(running_inventory_data) + 1,
         "Name": input("Enter product name: "),
         "Price": float(input("Enter product price: ")),
         "Quantity": int(input("Enter product quantity: "))
     }
-    stored_inventory_data.append(new_product)
+    running_inventory_data.append(new_product)
     print("Product added successfully!")
-    return stored_inventory_data
+    return running_inventory_data
 
-def update_stock():
+def update_stock(running_inventory_data):
     print("\nUpdate Stock")
-    with open(INVENTORY_FILEPATH, "r") as f:
-        inventory_data = json.load(f)
     product_id = int(input("Enter Product ID: "))
-    for product in inventory_data:
+    for product in running_inventory_data:
         if product["ID"] == product_id:
             print("\nProduct found:")
             print(f'Name: {product['Name']}')
             print(f'Current Stock: {product['Quantity']}')
             new_quantity = int(input("\nNew Stock Quantity: "))
             product["Quantity"] = new_quantity
-            with open(INVENTORY_FILEPATH, "w") as f:
-                json.dump(inventory_data, f, indent=4)
             print("\nStock updated successfully!")
-            return
+            return running_inventory_data
     print("Product not found.")
-    return
+    return running_inventory_data
 
 def search_product():
     print("\nSearch Product")
@@ -131,9 +127,9 @@ def main():
             case 1:
                 display_all(stored_inventory)
             case 2:
-                added_inventory = add_product(stored_inventory)
+                stored_inventory = add_product(stored_inventory)
             case 3:
-                update_stock()
+                stored_inventory = update_stock(stored_inventory)
             case 4:
                 search_product()
             case 5:
