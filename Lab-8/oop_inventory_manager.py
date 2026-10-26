@@ -5,52 +5,6 @@ import json
 # Constants
 INVENTORY_FILEPATH = Path(__file__).parent / "inventory.json"
 
-# Classes
-# Product class to represent individual products
-class Product:
-    def __init__(self, product_id: int, name: str, price: float, quantity: int):
-        self.product_id = product_id
-        self.name = name
-        self.price = price
-        self.quantity = quantity
-
-# Inventory class to manage the collection of products
-class Inventory:
-    # Class initialization
-    def __init__(self):
-        self.products = []
-
-    # Add new product to inventory
-    def add_product(self, product: Product):
-        self.products.append(product)
-
-    # Update stock of existing product
-    def update_stock(self, product_id: int, new_quantity: int):
-        for product in self.products:
-            if product.product_id == product_id:
-                product.quantity = new_quantity
-                return True
-        return False
-
-    # Search for a product by ID
-    def search_product(self, product_id: int) -> Any:
-        for product in self.products:
-            if product.product_id == product_id:
-                return product
-        return None
-
-    # Display all inventory items within file
-    def display_all(self):
-        if not self.products:
-            print("\nNo products found in the inventory.")
-            return
-        print("\nCurrent Inventory")
-        print("-" * 50)
-        for product in self.products:
-            print(f"ID: {product.product_id} | Name: {product.name} | Price: ${product.price:.2f} | Stock: {product.quantity}")
-        print("-" * 50)
-
-
 # Functions
 # Menu for user to select
 def inventory_menu():
@@ -102,6 +56,58 @@ def save_inventory(running_inventory_data):
     print("Inventory saved Successfully to inventory.json")
     return
 
+# Classes
+# Product class to represent individual products
+class Product:
+    def __init__(self, product_id: int, name: str, price: float, quantity: int):
+        self.product_id = product_id
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+# Inventory class to manage the collection of products
+class Inventory:
+    # Class initialization
+    def __init__(self):
+        self.products = load_inventory() or []
+
+    # Add new product to inventory
+    def add_product(self, product: Product):
+        print("\nAdd New Product")
+        id = len(self.products) + 1
+        name = input("Enter product name: ")
+        price = float(input("Enter product price: "))
+        quantity = int(input("Enter product quantity: "))
+        new_product = Product(id, name, price, quantity)
+        self.products.append(new_product)
+        print("Product added successfully!")
+
+    # Update stock of existing product
+    def update_stock(self, product_id: int, new_quantity: int):
+        for product in self.products:
+            if product.product_id == product_id:
+                product.quantity = new_quantity
+                return True
+        return False
+
+    # Search for a product by ID
+    def search_product(self, product_id: int) -> Any:
+        for product in self.products:
+            if product.product_id == product_id:
+                return product
+        return None
+
+    # Display all inventory items within file
+    def display_all(self):
+        if not self.products:
+            print("\nNo products found in the inventory.")
+            return
+        print("\nCurrent Inventory")
+        print("-" * 50)
+        for product in self.products:
+            print(f"ID: {product['ID']} | Name: {product['Name']} | Price: ${product['Price']:.2f} | Stock: {product['Quantity']}")
+        print("-" * 50)
+
 # Main Program
 def main():
     print("\n" + "=" * 30)
@@ -114,7 +120,7 @@ def main():
         user_choice = inventory_menu()
         match user_choice:
             case 1:
-                inventory.display_all(stored_inventory)
+                inventory.display_all()
             case 2:
                 stored_inventory = inventory.add_product(stored_inventory)
             case 3:
