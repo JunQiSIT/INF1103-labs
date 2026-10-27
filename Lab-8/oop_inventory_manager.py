@@ -40,9 +40,10 @@ def load_inventory():
             if not inventory_data:
                 return None
             else:
+                deserialize_products = [Product(**product) for product in inventory_data]
                 print('\ninventory.json file found.')
                 print('Inventory loaded successfully')
-                return inventory_data
+                return deserialize_products
     except FileNotFoundError:
         print("\nInventory file not found. Please ensure the inventory.json file exists.")
     except json.JSONDecodeError:
@@ -73,15 +74,10 @@ class Inventory:
         self.products = load_inventory() or []
 
     # Add new product to inventory
-    def add_product(self):
-        print("\nAdd New Product")
-        id = len(self.products) + 1
-        name = input("Enter product name: ")
-        price = float(input("Enter product price: "))
-        quantity = int(input("Enter product quantity: "))
-
+    def add_product(self, name: str, price: float, quantity: int):
         # Create a new Product instance and add it to the running inventory
-        new_product = Product(id, name, price, quantity)
+        prod_id = len(self.products) + 1
+        new_product = Product(prod_id, name, price, quantity)
         self.products.append(new_product)
         print("Product added successfully!")
 
@@ -108,7 +104,7 @@ class Inventory:
         print("\nCurrent Inventory")
         print("-" * 50)
         for product in self.products:
-            print(f"ID: {product['product_id']} | Name: {product['name']} | Price: ${product['price']:.2f} | Stock: {product['quantity']}")
+            print(f"ID: {product.product_id} | Name: {product.name} | Price: ${product.price:.2f} | Stock: {product.quantity}")
         print("-" * 50)
 
 # Main Program
@@ -124,7 +120,11 @@ def main():
             case 1:
                 inventory.display_all()
             case 2:
-                inventory.add_product()
+                print("\nAdd New Product")
+                name = input("Enter product name: ")
+                price = float(input("Enter product price: "))
+                quantity = int(input("Enter product quantity: "))
+                inventory.add_product(name, price, quantity)
             case 3:
                 inventory.update_stock()
             case 4:

@@ -4,5 +4,11 @@
         "name": "milk",
         "price": 9.0,
         "quantity": 10
+    },
+    {
+        "product_id": 2,
+        "name": "egg",
+        "price": 1.0,
+        "quantity": 10
     }
 ]
