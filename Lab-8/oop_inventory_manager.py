@@ -52,7 +52,8 @@ def load_inventory():
 def save_inventory(running_inventory_data):
     print("\nSaving inventory...")
     with open(INVENTORY_FILEPATH, "w") as f:
-        json.dump(running_inventory_data, f, indent=4)
+        save = [product.__dict__ for product in running_inventory_data]
+        json.dump(save, f, indent=4)
     print("Inventory saved Successfully to inventory.json")
     return
 
@@ -72,12 +73,14 @@ class Inventory:
         self.products = load_inventory() or []
 
     # Add new product to inventory
-    def add_product(self, product: Product):
+    def add_product(self):
         print("\nAdd New Product")
         id = len(self.products) + 1
         name = input("Enter product name: ")
         price = float(input("Enter product price: "))
         quantity = int(input("Enter product quantity: "))
+
+        # Create a new Product instance and add it to the running inventory
         new_product = Product(id, name, price, quantity)
         self.products.append(new_product)
         print("Product added successfully!")
@@ -105,7 +108,7 @@ class Inventory:
         print("\nCurrent Inventory")
         print("-" * 50)
         for product in self.products:
-            print(f"ID: {product['ID']} | Name: {product['Name']} | Price: ${product['Price']:.2f} | Stock: {product['Quantity']}")
+            print(f"ID: {product['product_id']} | Name: {product['name']} | Price: ${product['price']:.2f} | Stock: {product['quantity']}")
         print("-" * 50)
 
 # Main Program
@@ -114,7 +117,6 @@ def main():
     print('INVENTORY MANAGEMENT SYSTEM')
     print("=" * 30)
     inventory = Inventory()
-    stored_inventory = load_inventory()
 
     while True:
         user_choice = inventory_menu()
@@ -122,18 +124,18 @@ def main():
             case 1:
                 inventory.display_all()
             case 2:
-                stored_inventory = inventory.add_product(stored_inventory)
+                inventory.add_product()
             case 3:
-                stored_inventory = inventory.update_stock(stored_inventory)
+                inventory.update_stock()
             case 4:
-                inventory.search_product(stored_inventory)
+                inventory.search_product()
             case 5:
-                save_inventory(stored_inventory)
+                save_inventory(inventory.products)
             case 6:
                 print("\nSaving inventory before exit...")
                 
                 # Save inventory to file for persistence
-                save_inventory(stored_inventory)
+                save_inventory(inventory.products)
                 print("\nThank you for using the Inventory Management System. Goodbye!")
                 print("Program Terminated.")
                 return
