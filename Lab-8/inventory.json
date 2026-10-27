@@ -16,5 +16,11 @@
         "_name": "chicken",
         "_price": 9.0,
         "_quantity": 10
+    },
+    {
+        "_product_id": 4,
+        "_name": "beef",
+        "_price": 12.0,
+        "_quantity": 10
     }
 ]
