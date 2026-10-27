@@ -41,7 +41,7 @@ def load_inventory():
                 return None
             else:
                 # Deserialize the loaded inventory data into Product instances
-                deserialize_products = [Product(**product) for product in inventory_data]
+                deserialize_products = [Product.from_dict(product) for product in inventory_data]
                 print('\ninventory.json file found.')
                 print('Inventory loaded successfully')
                 return deserialize_products
@@ -65,10 +65,53 @@ def save_inventory(running_inventory_data):
 class Product:
     # Class initialization
     def __init__(self, product_id: int, name: str, price: float, quantity: int):
-        self.product_id = product_id
-        self.name = name
-        self.price = price
-        self.quantity = quantity
+        self._product_id = product_id
+        self._name = name
+        self._price = price
+        self._quantity = quantity
+
+    # Properties for product attributes
+    # Getters
+    @property
+    def product_id(self) -> int:
+        return self._product_id
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def price(self) -> float:
+        return self._price
+
+    @property
+    def quantity(self) -> int:
+        return self._quantity
+
+    # Setters
+    @quantity.setter
+    def quantity(self, new_quantity: int):
+        self._quantity = new_quantity
+
+    # Class method
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> 'Product':
+        return cls(
+            product_id=data.get("_product_id"),
+            name=data.get("_name"),
+            price=data.get("_price"),
+            quantity=data.get("_quantity")
+        )
+
+    # Update stock of existing product
+    def update_stock(self, new_quantity: int):
+        print("\nProduct found:")
+        print(f"Name: {self._name}")
+        print(f"Price: ${self._price:.2f}")
+        print(f"Current Stock: {self._quantity}")
+        self._quantity = new_quantity
+        print("\nStock updated successfully!")
+        
 
 # Inventory class to manage the collection of products
 class Inventory:
@@ -83,20 +126,6 @@ class Inventory:
         new_product = Product(prod_id, name, price, quantity)
         self.products.append(new_product)
         print("Product added successfully!")
-
-    # Update stock of existing product
-    def update_stock(self, target_product_id: int, new_quantity: int):
-        for product in self.products:
-            if product.product_id == target_product_id:
-                print("\nProduct found:")
-                print(f"Name: {product.name}")
-                print(f"Price: ${product.price:.2f}")
-                print(f"Current Stock: {product.quantity}")
-                product.quantity = new_quantity
-                print("\nStock updated successfully!")
-                return True
-        print("\nProduct not found.")
-        return False
 
     # Search for a product by ID
     def search_product(self, target_search_id: int) -> Product | None:
@@ -137,8 +166,12 @@ def main():
             case 3:
                 print("\nUpdate Stock")
                 product_id = int(input("Enter Product ID: "))
-                new_quantity = int(input("New Stock Quantity: "))
-                inventory.update_stock(product_id, new_quantity)
+                found_product = inventory.search_product(product_id)
+                if found_product:
+                    new_quantity = int(input("New Stock Quantity: "))
+                    found_product.update_stock(new_quantity)
+                else:
+                    print("\nProduct not found.")
             case 4:
                 print("\nSearch Product")
                 search_id = int(input("Enter Product ID: "))

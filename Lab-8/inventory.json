@@ -1,14 +1,20 @@
 [
     {
-        "product_id": 1,
-        "name": "milk",
-        "price": 9.0,
-        "quantity": 20
+        "_product_id": 1,
+        "_name": "milk",
+        "_price": 9.0,
+        "_quantity": 30
     },
     {
-        "product_id": 2,
-        "name": "egg",
-        "price": 1.0,
-        "quantity": 10
+        "_product_id": 2,
+        "_name": "egg",
+        "_price": 1.0,
+        "_quantity": 10
+    },
+    {
+        "_product_id": 3,
+        "_name": "chicken",
+        "_price": 9.0,
+        "_quantity": 10
     }
 ]
