@@ -3,7 +3,7 @@
         "product_id": 1,
         "name": "milk",
         "price": 9.0,
-        "quantity": 10
+        "quantity": 20
     },
     {
         "product_id": 2,

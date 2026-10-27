@@ -82,11 +82,17 @@ class Inventory:
         print("Product added successfully!")
 
     # Update stock of existing product
-    def update_stock(self, product_id: int, new_quantity: int):
+    def update_stock(self, target_product_id: int, new_quantity: int):
         for product in self.products:
-            if product.product_id == product_id:
+            if product.product_id == target_product_id:
+                print("\nProduct found:")
+                print(f"Name: {product.name}")
+                print(f"Price: ${product.price:.2f}")
+                print(f"Current Stock: {product.quantity}")
                 product.quantity = new_quantity
+                print("\nStock updated successfully!")
                 return True
+        print("\nProduct not found.")
         return False
 
     # Search for a product by ID
@@ -126,7 +132,10 @@ def main():
                 quantity = int(input("Enter product quantity: "))
                 inventory.add_product(name, price, quantity)
             case 3:
-                inventory.update_stock()
+                print("\nUpdate Stock")
+                product_id = int(input("Enter Product ID: "))
+                new_quantity = int(input("New Stock Quantity: "))
+                inventory.update_stock(product_id, new_quantity)
             case 4:
                 inventory.search_product()
             case 5:
