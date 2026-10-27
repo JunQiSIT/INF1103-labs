@@ -40,6 +40,7 @@ def load_inventory():
             if not inventory_data:
                 return None
             else:
+                # Deserialize the loaded inventory data into Product instances
                 deserialize_products = [Product(**product) for product in inventory_data]
                 print('\ninventory.json file found.')
                 print('Inventory loaded successfully')
@@ -53,6 +54,7 @@ def load_inventory():
 def save_inventory(running_inventory_data):
     print("\nSaving inventory...")
     with open(INVENTORY_FILEPATH, "w") as f:
+        # Serialize products to a list of dictionaries before saving
         save = [product.__dict__ for product in running_inventory_data]
         json.dump(save, f, indent=4)
     print("Inventory saved Successfully to inventory.json")
@@ -61,6 +63,7 @@ def save_inventory(running_inventory_data):
 # Classes
 # Product class to represent individual products
 class Product:
+    # Class initialization
     def __init__(self, product_id: int, name: str, price: float, quantity: int):
         self.product_id = product_id
         self.name = name
@@ -96,9 +99,9 @@ class Inventory:
         return False
 
     # Search for a product by ID
-    def search_product(self, product_id: int) -> Any:
+    def search_product(self, target_search_id: int) -> Product | None:
         for product in self.products:
-            if product.product_id == product_id:
+            if product.product_id == target_search_id:
                 return product
         return None
 
@@ -137,7 +140,20 @@ def main():
                 new_quantity = int(input("New Stock Quantity: "))
                 inventory.update_stock(product_id, new_quantity)
             case 4:
-                inventory.search_product()
+                print("\nSearch Product")
+                search_id = int(input("Enter Product ID: "))
+                found = inventory.search_product(search_id)
+
+                if found:
+                    print("\nProduct found:")
+                    print("-" * 30)
+                    print(f"ID: {found.product_id}")
+                    print(f"Name: {found.name}")
+                    print(f"Price: ${found.price:.2f}")
+                    print(f"Stock: {found.quantity}")
+                    print("-" * 30)
+                else:
+                    print("\nProduct not found.")
             case 5:
                 save_inventory(inventory.products)
             case 6:
