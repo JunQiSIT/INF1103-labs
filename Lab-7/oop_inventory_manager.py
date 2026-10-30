@@ -189,12 +189,12 @@ class DigitalProduct(Product):
 class Inventory:
     # Class initialization
     def __init__(self):
-        self.products = load_inventory() or []
+        self._products = load_inventory() or []
 
     # Add new product to inventory
     def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None):
         # Create a new Product instance and add it to the running inventory
-        prod_id = len(self.products) + 1
+        prod_id = len(self._products) + 1
         if prod_type == "physical":
             new_product = PhysicalProduct(prod_id, prod_type, name, price, quantity, weight)
             new_product.get_fufilment_info()
@@ -202,24 +202,24 @@ class Inventory:
         else:
             new_product = DigitalProduct(prod_id, prod_type, name, price, quantity, download_size)
             new_product.get_fufilment_info()
-        self.products.append(new_product)
+        self._products.append(new_product)
         print("Product added successfully!")
 
     # Search for a product by ID
     def search_product(self, target_search_id: int) -> Product | None:
-        for product in self.products:
+        for product in self._products:
             if product.product_id == target_search_id:
                 return product
         return None
 
     # Display all inventory items within file
     def display_all(self):
-        if not self.products:
+        if not self._products:
             print("\nNo products found in the inventory.")
             return
         print("\nCurrent Inventory")
         print("-" * 50)
-        for product in self.products:
+        for product in self._products:
             if isinstance(product, PhysicalProduct):
                 product.display_information()
             elif isinstance(product, DigitalProduct):
@@ -286,12 +286,12 @@ def main():
                 else:
                     print("\nProduct not found.")
             case 5:
-                save_inventory(inventory.products)
+                save_inventory(inventory._products)
             case 6:
                 print("\nSaving inventory before exit...")
                 
                 # Save inventory to file for persistence
-                save_inventory(inventory.products)
+                save_inventory(inventory._products)
                 print("\nThank you for using the Inventory Management System. Goodbye!")
                 print("Program Terminated.")
                 return

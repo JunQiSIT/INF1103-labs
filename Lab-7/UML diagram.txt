@@ -1,0 +1,61 @@
++-----------------------------------------------------------------+
+|                       <<Interface>>                             |
+|                       CanBeShipped                              |
++-----------------------------------------------------------------+
+| + calculate_shipping_cost() : void                              |
++-----------------------------------------------------------------+
+                                ^
+                                :
+                                : (Interface realisation: dashed line + hollow triangle)
+                                :
++-----------------------------------------------------------------+
+|                       <<abstract>>                              |
+|                         Product                                 |
++-----------------------------------------------------------------+
+| # _product_id : int                                             |
+| # _product_type : str                                           |
+| # _name : str                                                   |
+| # _price : float                                                |
+| # _quantity : int                                               |
++-----------------------------------------------------------------+
+| + product_id() : int                <<property getter>>         |
+| + product_type() : str              <<property getter>>         |
+| + name() : str                      <<property getter>>         |
+| + price() : float                   <<property getter>>         |
+| + quantity() : int                  <<property getter>>         |
+| + quantity(new_quantity: int)       <<property setter>>         |
+| + from_dict(data: dict) : Product   <<class method>>            |
+| + update_stock(new_quantity: int)                               |
+| + display_information() : str                                   |
+| + get_fufilment_info() : void       <<abstract method>>         |
++-----------------------------------------------------------------+
+             ^                                       ^
+             |                                       |
+             +-------------------+-------------------+
+                                 | (Inheritance: solid line + hollow triangle)
+                                 |
+        +------------------------+------------------------+
+        |                                                 |
++-------------------------------+       +---------------------------------+
+|        PhysicalProduct        |       |         DigitalProduct          |
++-------------------------------+       +---------------------------------+
+| # _weight : float             |       | # _download_size : float        |
++-------------------------------+       +---------------------------------+
+| + weight() : float            |       | + download_size() : float       |
+| + display_information()       |       | + display_information()         |
+| + get_fufilment_info()        |       | + get_fufilment_info()          |
+| + calculate_shipping_cost()   |       +---------------------------------+
++-------------------------------+
+                ^
+                |
+                | 0..* (contains)
+                |
++-----------------------------------------------------------------+
+|                            Inventory                            |
++-----------------------------------------------------------------+
+| # products : list[Product]                                      |
++-----------------------------------------------------------------+
+| + add_product(prod_type, name, price, quantity, weight, size)   |
+| + search_product(target_search_id: int) : Product | None        |
+| + display_all()                                                 |
++-----------------------------------------------------------------+
