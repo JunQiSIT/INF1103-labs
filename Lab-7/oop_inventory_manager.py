@@ -112,6 +112,9 @@ class Product:
         self._quantity = new_quantity
         print("\nStock updated successfully!")
 
+    def display_information(self):
+        return f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity}"
+
 # Physical product subclass
 class PhysicalProduct(Product):
     def __init__(self, product_id: int, name: str, price: float, quantity: int, weight: float):
@@ -122,8 +125,8 @@ class PhysicalProduct(Product):
     def weight(self) -> float:
         return self._weight
 
-    def display_information(self):
-        print(f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity} | Weight: {self.weight}kg")
+    def display_information_physical(self):
+        print(super().display_information() + f" | Weight: {self.weight}kg")
     
 # Digital product subclass
 class DigitalProduct(Product):
@@ -135,8 +138,8 @@ class DigitalProduct(Product):
     def download_size(self) -> float:
         return self._download_size
 
-    def display_information(self):
-        print(f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity} | Download Size: {self.download_size}MB")
+    def display_information_digital(self):
+        print(super().display_information() + f" | Download Size: {self.download_size}MB")
 
 # Inventory class to manage the collection of products
 class Inventory:
@@ -224,4 +227,8 @@ def main():
                 return
 
 if __name__=="__main__":
-    main()
+    # main()
+    test = PhysicalProduct(1, "Test Product", 10.0, 5, 2.5)
+    test.display_information_physical()
+    test2 = DigitalProduct(2, "Digital Product", 15.0, 10, 50.0)
+    test2.display_information_digital()
