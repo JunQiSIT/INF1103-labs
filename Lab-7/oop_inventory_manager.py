@@ -184,6 +184,12 @@ class Inventory:
             print(f"ID: {product.product_id} | Name: {product.name} | Price: ${product.price:.2f} | Stock: {product.quantity}")
         print("-" * 50)
 
+# Base abstract class for shipping
+class CanBeShipped(ABC):
+    @abstractmethod
+    def calculate_shipping_cost(self):
+        pass
+
 # Main Program
 def main():
     print("\n" + "=" * 30)
