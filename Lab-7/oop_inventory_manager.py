@@ -126,7 +126,17 @@ class PhysicalProduct(Product):
         print(f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity} | Weight: {self.weight}kg")
     
 # Digital product subclass
+class DigitalProduct(Product):
+    def __init__(self, product_id: int, name: str, price: float, quantity: int, download_size: float):
+        super().__init__(product_id, name, price, quantity)
+        self._download_size = download_size
 
+    @property
+    def download_size(self) -> float:
+        return self._download_size
+
+    def display_information(self):
+        print(f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity} | Download Size: {self.download_size}MB")
 
 # Inventory class to manage the collection of products
 class Inventory:
