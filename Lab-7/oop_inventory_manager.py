@@ -72,8 +72,9 @@ class CanBeShipped(ABC):
 # Product class to represent individual products
 class Product(ABC):
     # Class initialization
-    def __init__(self, product_id: int, name: str, price: float, quantity: int):
+    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int):
         self._product_id = product_id
+        self._product_type = product_type
         self._name = name
         self._price = price
         self._quantity = quantity
@@ -84,6 +85,10 @@ class Product(ABC):
     def product_id(self) -> int:
         return self._product_id
 
+    @property
+    def product_type(self) -> str:
+        return self._product_type
+    
     @property
     def name(self) -> str:
         return self._name
@@ -104,12 +109,25 @@ class Product(ABC):
     # Class method
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> 'Product':
-        return cls(
-            product_id=data.get("_product_id"),
-            name=data.get("_name"),
-            price=data.get("_price"),
-            quantity=data.get("_quantity")
-        )
+        if "_weight" in data:
+            return PhysicalProduct(
+                product_id=data.get("_product_id"),
+                product_type=data.get("_product_type"),
+                name=data.get("_name"),
+                price=data.get("_price"),
+                quantity=data.get("_quantity"),
+                weight=data.get("_weight")
+            )
+        
+        if "_download_size" in data:
+            return DigitalProduct(
+                product_id=data.get("_product_id"),
+                product_type=data.get("_product_type"),
+                name=data.get("_name"),
+                price=data.get("_price"),
+                quantity=data.get("_quantity"),
+                download_size=data.get("_download_size")
+            )
 
     # Update stock of existing product
     def update_stock(self, new_quantity: int):
@@ -121,7 +139,7 @@ class Product(ABC):
         print("\nStock updated successfully!")
 
     def display_information(self):
-        return f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity}"
+        return f"ID: {self.product_id} | Type: {self.product_type} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity}"
 
     @abstractmethod
     def get_fufilment_info():
@@ -129,8 +147,8 @@ class Product(ABC):
 
 # Physical product subclass
 class PhysicalProduct(Product, CanBeShipped):
-    def __init__(self, product_id: int, name: str, price: float, quantity: int, weight: float):
-        super().__init__(product_id, name, price, quantity)
+    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, weight: float):
+        super().__init__(product_id, product_type, name, price, quantity)
         self._weight = weight
 
     @property
@@ -149,8 +167,8 @@ class PhysicalProduct(Product, CanBeShipped):
 
 # Digital product subclass
 class DigitalProduct(Product):
-    def __init__(self, product_id: int, name: str, price: float, quantity: int, download_size: float):
-        super().__init__(product_id, name, price, quantity)
+    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, download_size: float):
+        super().__init__(product_id, product_type, name, price, quantity)
         self._download_size = download_size
 
     @property
@@ -170,10 +188,16 @@ class Inventory:
         self.products = load_inventory() or []
 
     # Add new product to inventory
-    def add_product(self, name: str, price: float, quantity: int):
+    def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None):
         # Create a new Product instance and add it to the running inventory
         prod_id = len(self.products) + 1
-        new_product = Product(prod_id, name, price, quantity)
+        if prod_type == "physical":
+            new_product = PhysicalProduct(prod_id, prod_type, name, price, quantity, weight)
+            new_product.get_fufilment_info()
+            new_product.calculate_shipping_cost()
+        else:
+            new_product = DigitalProduct(prod_id, prod_type, name, price, quantity, download_size)
+            new_product.get_fufilment_info()
         self.products.append(new_product)
         print("Product added successfully!")
 
@@ -192,7 +216,10 @@ class Inventory:
         print("\nCurrent Inventory")
         print("-" * 50)
         for product in self.products:
-            print(f"ID: {product.product_id} | Name: {product.name} | Price: ${product.price:.2f} | Stock: {product.quantity}")
+            if isinstance(product, PhysicalProduct):
+                product.display_information()
+            elif isinstance(product, DigitalProduct):
+                product.display_information()
         print("-" * 50)
 
 # Main Program
@@ -209,10 +236,22 @@ def main():
                 inventory.display_all()
             case 2:
                 print("\nAdd New Product")
+                while True:
+                    product_type = input("Enter product type (physical/digital): ").strip().lower()
+                    if product_type in ["physical", "digital"]:
+                        break
+                    else:
+                        print("Invalid product type. Please enter 'physical' or 'digital'.")
                 name = input("Enter product name: ")
                 price = float(input("Enter product price: "))
                 quantity = int(input("Enter product quantity: "))
-                inventory.add_product(name, price, quantity)
+
+                if product_type == "physical":
+                    weight = float(input("Enter product weight (kg): "))
+                    inventory.add_product(product_type, name, price, quantity, weight, None)
+                else:
+                    download_size = float(input("Enter digital file size (MB): "))
+                    inventory.add_product(product_type, name, price, quantity, None, download_size)
             case 3:
                 print("\nUpdate Stock")
                 product_id = int(input("Enter Product ID: "))
@@ -249,10 +288,4 @@ def main():
                 return
 
 if __name__=="__main__":
-    # main()
-    test = PhysicalProduct(1, "Test Product", 10.0, 5, 2.5)
-    test.display_information()
-    test.get_fufilment_info()
-    test.calculate_shipping_cost()
-    test2 = DigitalProduct(2, "Digital Product", 15.0, 10, 50.0)
-    test2.display_information()
+    main()
