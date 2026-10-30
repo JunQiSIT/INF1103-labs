@@ -1,26 +1,58 @@
 [
     {
         "_product_id": 1,
+        "_product_type": "physical",
         "_name": "milk",
         "_price": 9.0,
-        "_quantity": 30
+        "_quantity": 30,
+        "_weight": 1.0
     },
     {
         "_product_id": 2,
+        "_product_type": "physical",
         "_name": "egg",
         "_price": 1.0,
-        "_quantity": 10
+        "_quantity": 10,
+        "_weight": 0.05
     },
     {
         "_product_id": 3,
+        "_product_type": "physical",
         "_name": "chicken",
         "_price": 9.0,
-        "_quantity": 10
+        "_quantity": 10,
+        "_weight": 1.0
     },
     {
         "_product_id": 4,
+        "_product_type": "physical",
         "_name": "beef",
         "_price": 12.0,
-        "_quantity": 10
+        "_quantity": 10,
+        "_weight": 1.0
+    },
+    {
+        "_product_id": 5,
+        "_product_type": "digital",
+        "_name": "bottle image",
+        "_price": 10.0,
+        "_quantity": 10,
+        "_download_size": 5.0
+    },
+    {
+        "_product_id": 6,
+        "_product_type": "physical",
+        "_name": "fish",
+        "_price": 8.0,
+        "_quantity": 10,
+        "_weight": 1.0
+    },
+    {
+        "_product_id": 7,
+        "_product_type": "digital",
+        "_name": "music",
+        "_price": 10.0,
+        "_quantity": 10,
+        "_download_size": 100.0
     }
 ]

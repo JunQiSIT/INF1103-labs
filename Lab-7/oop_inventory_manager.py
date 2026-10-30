@@ -270,9 +270,14 @@ def main():
                     print("\nProduct found:")
                     print("-" * 30)
                     print(f"ID: {found.product_id}")
+                    print(f"Type: {found.product_type}")
                     print(f"Name: {found.name}")
                     print(f"Price: ${found.price:.2f}")
                     print(f"Stock: {found.quantity}")
+                    if isinstance(found, PhysicalProduct):
+                        print(f"Weight: {found.weight}kg")
+                    elif isinstance(found, DigitalProduct):
+                        print(f"Download Size: {found.download_size}MB")
                     print("-" * 30)
                 else:
                     print("\nProduct not found.")
