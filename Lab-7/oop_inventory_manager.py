@@ -122,7 +122,7 @@ class PhysicalProduct(Product):
     def weight(self) -> float:
         return self._weight
 
-    def display_info(self):
+    def display_information(self):
         print(f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity} | Weight: {self.weight}kg")
     
 # Digital product subclass
