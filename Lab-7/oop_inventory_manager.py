@@ -132,9 +132,13 @@ class Product(ABC):
     # Update stock of existing product
     def update_stock(self, new_quantity: int):
         print("\nProduct found:")
+        print("-" * 30)
         print(f"Name: {self._name}")
+        print(f"Type: {self._product_type}")
         print(f"Price: ${self._price:.2f}")
         print(f"Current Stock: {self._quantity}")
+        print(f"Weight: {getattr(self, '_weight', 'N/A')}kg" if hasattr(self, '_weight') else f"Download Size: {getattr(self, '_download_size', 'N/A')}MB")
+        print("-" * 30)
         self._quantity = new_quantity
         print("\nStock updated successfully!")
 
