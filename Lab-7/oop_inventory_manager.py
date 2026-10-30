@@ -61,6 +61,13 @@ def save_inventory(running_inventory_data):
     print("Inventory saved Successfully to inventory.json")
     return
 
+# Abstract classes
+# Base abstract class for shipping
+class CanBeShipped(ABC):
+    @abstractmethod
+    def calculate_shipping_cost(self):
+        pass
+
 # Classes
 # Product class to represent individual products
 class Product(ABC):
@@ -121,7 +128,7 @@ class Product(ABC):
         pass
 
 # Physical product subclass
-class PhysicalProduct(Product):
+class PhysicalProduct(Product, CanBeShipped):
     def __init__(self, product_id: int, name: str, price: float, quantity: int, weight: float):
         super().__init__(product_id, name, price, quantity)
         self._weight = weight
@@ -135,7 +142,11 @@ class PhysicalProduct(Product):
 
     def get_fufilment_info(self):
         print(f"Physical Product requires physical shipping.")
-    
+
+    def calculate_shipping_cost(self):
+        # shipping cost: $5 per kg
+        print(f"Shipping cost for {self._name}: ${self._weight * 5.0:.2f}")
+
 # Digital product subclass
 class DigitalProduct(Product):
     def __init__(self, product_id: int, name: str, price: float, quantity: int, download_size: float):
@@ -183,12 +194,6 @@ class Inventory:
         for product in self.products:
             print(f"ID: {product.product_id} | Name: {product.name} | Price: ${product.price:.2f} | Stock: {product.quantity}")
         print("-" * 50)
-
-# Base abstract class for shipping
-class CanBeShipped(ABC):
-    @abstractmethod
-    def calculate_shipping_cost(self):
-        pass
 
 # Main Program
 def main():
@@ -248,5 +253,6 @@ if __name__=="__main__":
     test = PhysicalProduct(1, "Test Product", 10.0, 5, 2.5)
     test.display_information()
     test.get_fufilment_info()
+    test.calculate_shipping_cost()
     test2 = DigitalProduct(2, "Digital Product", 15.0, 10, 50.0)
     test2.display_information()
