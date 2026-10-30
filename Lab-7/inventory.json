@@ -1,0 +1,26 @@
+[
+    {
+        "_product_id": 1,
+        "_name": "milk",
+        "_price": 9.0,
+        "_quantity": 30
+    },
+    {
+        "_product_id": 2,
+        "_name": "egg",
+        "_price": 1.0,
+        "_quantity": 10
+    },
+    {
+        "_product_id": 3,
+        "_name": "chicken",
+        "_price": 9.0,
+        "_quantity": 10
+    },
+    {
+        "_product_id": 4,
+        "_name": "beef",
+        "_price": 12.0,
+        "_quantity": 10
+    }
+]
