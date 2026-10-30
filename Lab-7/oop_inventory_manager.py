@@ -125,7 +125,7 @@ class PhysicalProduct(Product):
     def weight(self) -> float:
         return self._weight
 
-    def display_information_physical(self):
+    def display_information(self):
         print(super().display_information() + f" | Weight: {self.weight}kg")
     
 # Digital product subclass
@@ -138,7 +138,7 @@ class DigitalProduct(Product):
     def download_size(self) -> float:
         return self._download_size
 
-    def display_information_digital(self):
+    def display_information(self):
         print(super().display_information() + f" | Download Size: {self.download_size}MB")
 
 # Inventory class to manage the collection of products
@@ -229,6 +229,6 @@ def main():
 if __name__=="__main__":
     # main()
     test = PhysicalProduct(1, "Test Product", 10.0, 5, 2.5)
-    test.display_information_physical()
+    test.display_information()
     test2 = DigitalProduct(2, "Digital Product", 15.0, 10, 50.0)
-    test2.display_information_digital()
+    test2.display_information()
