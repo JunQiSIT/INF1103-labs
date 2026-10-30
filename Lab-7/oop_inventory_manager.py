@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Any
+from abc import ABC, abstractmethod
 import json
 
 # Constants
@@ -62,7 +63,7 @@ def save_inventory(running_inventory_data):
 
 # Classes
 # Product class to represent individual products
-class Product:
+class Product(ABC):
     # Class initialization
     def __init__(self, product_id: int, name: str, price: float, quantity: int):
         self._product_id = product_id
@@ -115,6 +116,10 @@ class Product:
     def display_information(self):
         return f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity}"
 
+    @abstractmethod
+    def get_fufilment_info():
+        pass
+
 # Physical product subclass
 class PhysicalProduct(Product):
     def __init__(self, product_id: int, name: str, price: float, quantity: int, weight: float):
@@ -127,6 +132,9 @@ class PhysicalProduct(Product):
 
     def display_information(self):
         print(super().display_information() + f" | Weight: {self.weight}kg")
+
+    def get_fufilment_info(self):
+        print(f"Physical Product requires physical shipping.")
     
 # Digital product subclass
 class DigitalProduct(Product):
@@ -137,9 +145,12 @@ class DigitalProduct(Product):
     @property
     def download_size(self) -> float:
         return self._download_size
-
+    
     def display_information(self):
         print(super().display_information() + f" | Download Size: {self.download_size}MB")
+
+    def get_fufilment_info(self):
+        print(f"Digital Product is delivered digitally via download.")
 
 # Inventory class to manage the collection of products
 class Inventory:
@@ -230,5 +241,6 @@ if __name__=="__main__":
     # main()
     test = PhysicalProduct(1, "Test Product", 10.0, 5, 2.5)
     test.display_information()
+    test.get_fufilment_info()
     test2 = DigitalProduct(2, "Digital Product", 15.0, 10, 50.0)
     test2.display_information()
