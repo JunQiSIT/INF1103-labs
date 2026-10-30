@@ -111,7 +111,22 @@ class Product:
         print(f"Current Stock: {self._quantity}")
         self._quantity = new_quantity
         print("\nStock updated successfully!")
-        
+
+# Physical product subclass
+class PhysicalProduct(Product):
+    def __init__(self, product_id: int, name: str, price: float, quantity: int, weight: float):
+        super().__init__(product_id, name, price, quantity)
+        self._weight = weight
+
+    @property
+    def weight(self) -> float:
+        return self._weight
+
+    def display_info(self):
+        print(f"ID: {self.product_id} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity} | Weight: {self.weight}kg")
+    
+# Digital product subclass
+
 
 # Inventory class to manage the collection of products
 class Inventory:
