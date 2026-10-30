@@ -4,7 +4,7 @@
         "_product_type": "physical",
         "_name": "milk",
         "_price": 9.0,
-        "_quantity": 30,
+        "_quantity": 20,
         "_weight": 1.0
     },
     {
@@ -52,7 +52,7 @@
         "_product_type": "digital",
         "_name": "music",
         "_price": 10.0,
-        "_quantity": 10,
+        "_quantity": 90,
         "_download_size": 100.0
     }
 ]
