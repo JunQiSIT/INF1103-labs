@@ -1,13 +1,15 @@
 from pathlib import Path
 from typing import Any
-from abc import ABC, abstractmethod
 import json
 
 # Constants
 INVENTORY_FILEPATH = Path(__file__).parent / "inventory.json"
 
 # Classes
-import CanBeShipped
+from product import Product
+from physicalproduct import PhysicalProduct
+from digitalproduct import DigitalProduct
+from inventory import Inventory
 
 # Functions
 # Menu for user to select
@@ -63,164 +65,6 @@ def save_inventory(running_inventory_data):
         json.dump(save, f, indent=4)
     print("Inventory saved Successfully to inventory.json")
     return
-
-# Classes
-# Product class to represent individual products
-class Product(ABC):
-    # Class initialization
-    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int):
-        self._product_id = product_id
-        self._product_type = product_type
-        self._name = name
-        self._price = price
-        self._quantity = quantity
-
-    # Properties for product attributes
-    # Getters
-    @property
-    def product_id(self) -> int:
-        return self._product_id
-
-    @property
-    def product_type(self) -> str:
-        return self._product_type
-    
-    @property
-    def name(self) -> str:
-        return self._name
-
-    @property
-    def price(self) -> float:
-        return self._price
-
-    @property
-    def quantity(self) -> int:
-        return self._quantity
-
-    # Setters
-    @quantity.setter
-    def quantity(self, new_quantity: int):
-        self._quantity = new_quantity
-
-    # Class method
-    @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'Product':
-        if "_weight" in data:
-            return PhysicalProduct(
-                product_id=data.get("_product_id"),
-                product_type=data.get("_product_type"),
-                name=data.get("_name"),
-                price=data.get("_price"),
-                quantity=data.get("_quantity"),
-                weight=data.get("_weight")
-            )
-        
-        if "_download_size" in data:
-            return DigitalProduct(
-                product_id=data.get("_product_id"),
-                product_type=data.get("_product_type"),
-                name=data.get("_name"),
-                price=data.get("_price"),
-                quantity=data.get("_quantity"),
-                download_size=data.get("_download_size")
-            )
-
-    # Update stock of existing product
-    def update_stock(self, new_quantity: int):
-        print("\nProduct found:")
-        print("-" * 30)
-        print(f"Name: {self._name}")
-        print(f"Type: {self._product_type}")
-        print(f"Price: ${self._price:.2f}")
-        print(f"Current Stock: {self._quantity}")
-        print(f"Weight: {getattr(self, '_weight', 'N/A')}kg" if hasattr(self, '_weight') else f"Download Size: {getattr(self, '_download_size', 'N/A')}MB")
-        print("-" * 30)
-        self._quantity = new_quantity
-        print("\nStock updated successfully!")
-
-    def display_information(self):
-        return f"ID: {self.product_id} | Type: {self.product_type} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity}"
-
-    @abstractmethod
-    def get_fufilment_info():
-        pass
-
-# Physical product subclass
-class PhysicalProduct(Product, CanBeShipped):
-    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, weight: float):
-        super().__init__(product_id, product_type, name, price, quantity)
-        self._weight = weight
-
-    @property
-    def weight(self) -> float:
-        return self._weight
-
-    def display_information(self):
-        print(super().display_information() + f" | Weight: {self.weight}kg")
-
-    def get_fufilment_info(self):
-        print(f"Physical Product requires physical shipping.")
-
-    def calculate_shipping_cost(self):
-        # shipping cost: $5 per kg
-        print(f"Shipping cost for {self._name}: ${self._weight * 5.0:.2f}")
-
-# Digital product subclass
-class DigitalProduct(Product):
-    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, download_size: float):
-        super().__init__(product_id, product_type, name, price, quantity)
-        self._download_size = download_size
-
-    @property
-    def download_size(self) -> float:
-        return self._download_size
-    
-    def display_information(self):
-        print(super().display_information() + f" | Download Size: {self.download_size}MB")
-
-    def get_fufilment_info(self):
-        print(f"Digital Product is delivered digitally via download.")
-
-# Inventory class to manage the collection of products
-class Inventory:
-    # Class initialization
-    def __init__(self):
-        self._products = load_inventory() or []
-
-    # Add new product to inventory
-    def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None):
-        # Create a new Product instance and add it to the running inventory
-        prod_id = len(self._products) + 1
-        if prod_type == "physical":
-            new_product = PhysicalProduct(prod_id, prod_type, name, price, quantity, weight)
-            new_product.get_fufilment_info()
-            new_product.calculate_shipping_cost()
-        else:
-            new_product = DigitalProduct(prod_id, prod_type, name, price, quantity, download_size)
-            new_product.get_fufilment_info()
-        self._products.append(new_product)
-        print("Product added successfully!")
-
-    # Search for a product by ID
-    def search_product(self, target_search_id: int) -> Product | None:
-        for product in self._products:
-            if product.product_id == target_search_id:
-                return product
-        return None
-
-    # Display all inventory items within file
-    def display_all(self):
-        if not self._products:
-            print("\nNo products found in the inventory.")
-            return
-        print("\nCurrent Inventory")
-        print("-" * 50)
-        for product in self._products:
-            if isinstance(product, PhysicalProduct):
-                product.display_information()
-            elif isinstance(product, DigitalProduct):
-                product.display_information()
-        print("-" * 50)
 
 # Main Program
 def main():
