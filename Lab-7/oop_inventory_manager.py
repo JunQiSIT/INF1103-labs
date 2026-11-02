@@ -6,6 +6,9 @@ import json
 # Constants
 INVENTORY_FILEPATH = Path(__file__).parent / "inventory.json"
 
+# Classes
+import CanBeShipped
+
 # Functions
 # Menu for user to select
 def inventory_menu():
@@ -60,13 +63,6 @@ def save_inventory(running_inventory_data):
         json.dump(save, f, indent=4)
     print("Inventory saved Successfully to inventory.json")
     return
-
-# Abstract classes
-# Base abstract class for shipping
-class CanBeShipped(ABC):
-    @abstractmethod
-    def calculate_shipping_cost(self):
-        pass
 
 # Classes
 # Product class to represent individual products
