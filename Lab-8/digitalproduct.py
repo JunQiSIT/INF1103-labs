@@ -1,9 +1,12 @@
 from product import Product
 
+# Classes imports
+from supplier import Supplier
+
 # Digital product subclass
 class DigitalProduct(Product):
-    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, download_size: float):
-        super().__init__(product_id, product_type, name, price, quantity)
+    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, download_size: float, supplier: Supplier):
+        super().__init__(product_id, product_type, name, price, quantity, supplier)
         self._download_size = download_size
 
     @property
@@ -12,6 +15,7 @@ class DigitalProduct(Product):
     
     def display_information(self):
         print(super().display_information() + f" | Download Size: {self.download_size}MB")
+        self._supplier.display_information()
 
     def get_fufilment_info(self):
         print(f"Digital Product is delivered digitally via download.")
