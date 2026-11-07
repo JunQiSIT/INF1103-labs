@@ -1,5 +1,5 @@
 class Supplier:
-    def __init__(self, supplier_id, supplier_name, contact_email):
+    def __init__(self, supplier_id: int, supplier_name: str, contact_email: str):
         self._supplier_id = supplier_id
         self._supplier_name = supplier_name
         self._contact_email = contact_email
