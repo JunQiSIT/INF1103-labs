@@ -10,6 +10,7 @@ from product import Product
 from physicalproduct import PhysicalProduct
 from digitalproduct import DigitalProduct
 from inventory import Inventory
+from supplier import Supplier
 
 # Functions
 # Menu for user to select
@@ -59,10 +60,29 @@ def load_inventory():
 # Save inventory to file for persistence
 def save_inventory(running_inventory_data):
     print("\nSaving inventory...")
-    with open(INVENTORY_FILEPATH, "w") as f:
+    save_data = []
+
+    for product in running_inventory_data:
+        # Shallow copy product internal dictionary
+        prod_dict = product.__dict__.copy()
+
+        # Remove the nested _supplier object reference
+        supplier_obj = prod_dict.pop("_supplier", None)
+
+        # Flatten supplier attributes to top-level keys
+        if supplier_obj:
+            prod_dict["_supplier_id"] = supplier_obj.supplier_id
+            prod_dict["_supplier_name"] = supplier_obj.supplier_name
+            prod_dict["_contact_email"] = supplier_obj.contact_email
+        else:
+            prod_dict["_supplier_id"] = None
+            prod_dict["_supplier_name"] = None
+            prod_dict["_contact_email"] = None
+
+        save_data.append(prod_dict)
+    with open(INVENTORY_FILEPATH, "w") as f: 
         # Serialize products to a list of dictionaries before saving
-        save = [product.__dict__ for product in running_inventory_data]
-        json.dump(save, f, indent=4)
+        json.dump(save_data, f, indent=4)
     print("Inventory saved Successfully to inventory.json")
     return
 
@@ -89,13 +109,16 @@ def main():
                 name = input("Enter product name: ")
                 price = float(input("Enter product price: "))
                 quantity = int(input("Enter product quantity: "))
+                supplier_name = input("Enter supplier name: ")
+                supplier_email = input("Enter supplier contact email: ")
+                supplier = Supplier(supplier_name, supplier_email)
 
                 if product_type == "physical":
                     weight = float(input("Enter product weight (kg): "))
-                    inventory.add_product(product_type, name, price, quantity, weight, None)
+                    inventory.add_product(product_type, name, price, quantity, weight, None, supplier)
                 else:
                     download_size = float(input("Enter digital file size (MB): "))
-                    inventory.add_product(product_type, name, price, quantity, None, download_size)
+                    inventory.add_product(product_type, name, price, quantity, None, download_size, supplier)
             case 3:
                 print("\nUpdate Stock")
                 product_id = int(input("Enter Product ID: "))

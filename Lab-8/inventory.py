@@ -1,6 +1,7 @@
 from physicalproduct import PhysicalProduct
 from digitalproduct import DigitalProduct
 from product import Product
+from supplier import Supplier
 
 # Inventory class to manage the collection of products
 class Inventory:
@@ -10,15 +11,15 @@ class Inventory:
         self._products = load_inventory() or []
 
     # Add new product to inventory
-    def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None):
+    def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None, supplier: Supplier):
         # Create a new Product instance and add it to the running inventory
         prod_id = len(self._products) + 1
         if prod_type == "physical":
-            new_product = PhysicalProduct(prod_id, prod_type, name, price, quantity, weight)
+            new_product = PhysicalProduct(prod_id, prod_type, name, price, quantity, weight, supplier)
             new_product.get_fufilment_info()
             new_product.calculate_shipping_cost()
         else:
-            new_product = DigitalProduct(prod_id, prod_type, name, price, quantity, download_size)
+            new_product = DigitalProduct(prod_id, prod_type, name, price, quantity, download_size, supplier)
             new_product.get_fufilment_info()
         self._products.append(new_product)
         print("Product added successfully!")

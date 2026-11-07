@@ -1,15 +1,19 @@
 from typing import Any
 from abc import ABC, abstractmethod
 
+# Classes imports
+from supplier import Supplier
+
 # Product class to represent individual products
 class Product(ABC):
     # Class initialization
-    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int):
+    def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, supplier: Supplier):
         self._product_id = product_id
         self._product_type = product_type
         self._name = name
         self._price = price
         self._quantity = quantity
+        self._supplier: Supplier = supplier
 
     # Properties for product attributes
     # Getters
@@ -50,7 +54,8 @@ class Product(ABC):
                 name=data.get("_name"),
                 price=data.get("_price"),
                 quantity=data.get("_quantity"),
-                weight=data.get("_weight")
+                weight=data.get("_weight"),
+                supplier=Supplier(data.get("_supplier_id"), data.get("_supplier_name"), data.get("_contact_email"))
             )
         
         if "_download_size" in data:
@@ -60,7 +65,8 @@ class Product(ABC):
                 name=data.get("_name"),
                 price=data.get("_price"),
                 quantity=data.get("_quantity"),
-                download_size=data.get("_download_size")
+                download_size=data.get("_download_size"),
+                supplier=Supplier(data.get("_supplier_id"), data.get("_supplier_name"), data.get("_contact_email"))
             )
 
     # Update stock of existing product
