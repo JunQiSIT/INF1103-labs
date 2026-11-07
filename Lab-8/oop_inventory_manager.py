@@ -111,7 +111,7 @@ def main():
                 quantity = int(input("Enter product quantity: "))
                 supplier_name = input("Enter supplier name: ")
                 supplier_email = input("Enter supplier contact email: ")
-                supplier = Supplier(supplier_name, supplier_email)
+                supplier = Supplier(len(inventory._products) + 1, supplier_name, supplier_email)
 
                 if product_type == "physical":
                     weight = float(input("Enter product weight (kg): "))
