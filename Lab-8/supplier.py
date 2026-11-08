@@ -30,4 +30,4 @@ class Supplier:
         self._contact_email = value
 
     def display_information(self):
-        print(f"Supplier ID: {self._supplier_id} | Name: {self._supplier_name} | Contact Email: {self._contact_email}")
+        print(f"Supplier ID: {self._supplier_id} | Supplier Name: {self._supplier_name} | Contact Email: {self._contact_email}")
