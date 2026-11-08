@@ -14,13 +14,13 @@ class PhysicalProduct(Product, CanBeShipped):
     def weight(self) -> float:
         return self._weight
 
-    def display_information(self):
+    def display_information(self) -> None:
         print(super().display_information() + f" | Weight: {self.weight}kg")
         self._supplier.display_information()
 
-    def get_fufilment_info(self):
+    def get_fufilment_info(self) -> None:
         print(f"Physical Product requires physical shipping.")
 
-    def calculate_shipping_cost(self):
+    def calculate_shipping_cost(self) -> None:
         # shipping cost: $5 per kg
         print(f"Shipping cost for {self._name}: ${self._weight * 5.0:.2f}")

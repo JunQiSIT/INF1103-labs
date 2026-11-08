@@ -70,7 +70,7 @@ class Product(ABC):
             )
 
     # Update stock of existing product
-    def update_stock(self, new_quantity: int):
+    def update_stock(self, new_quantity: int) -> None:
         print("\nProduct found:")
         print("-" * 30)
         print(f"Name: {self._name}")
@@ -82,9 +82,9 @@ class Product(ABC):
         self._quantity = new_quantity
         print("\nStock updated successfully!")
 
-    def display_information(self):
+    def display_information(self) -> str:
         return f"ID: {self.product_id} | Type: {self.product_type} | Name: {self.name} | Price: ${self.price:.2f} | Stock: {self.quantity}"
 
     @abstractmethod
-    def get_fufilment_info():
+    def get_fufilment_info(self) -> None:
         pass

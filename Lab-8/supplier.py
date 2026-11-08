@@ -29,5 +29,5 @@ class Supplier:
     def contact_email(self, value: str):
         self._contact_email = value
 
-    def display_information(self):
+    def display_information(self) -> None:
         print(f"Supplier ID: {self._supplier_id} | Supplier Name: {self._supplier_name} | Contact Email: {self._contact_email}")

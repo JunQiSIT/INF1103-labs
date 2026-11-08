@@ -11,7 +11,7 @@ class Inventory:
         self._products: list[Product] = load_inventory() or []
 
     # Add new product to inventory
-    def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None, supplier: Supplier):
+    def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None, supplier: Supplier) -> None:
         # Create a new Product instance and add it to the running inventory
         prod_id = len(self._products) + 1
         if prod_type == "physical":
@@ -31,7 +31,7 @@ class Inventory:
                 return product
         return None
 
-    def remove_product(self, product_id: int):
+    def remove_product(self, product_id: int) -> None:
         product_remove = self.search_product(product_id)
         if product_remove:
             self._products.remove(product_remove)
@@ -39,7 +39,7 @@ class Inventory:
         else:
             print(f"Product ID {product_id} not found in the inventory.")
     # Display all inventory items within file
-    def display_all(self):
+    def display_all(self) -> None:
         if not self._products:
             print("\nNo products found in the inventory.")
             return

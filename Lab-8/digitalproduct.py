@@ -13,9 +13,9 @@ class DigitalProduct(Product):
     def download_size(self) -> float:
         return self._download_size
     
-    def display_information(self):
+    def display_information(self) -> None:
         print(super().display_information() + f" | Download Size: {self.download_size}MB")
         self._supplier.display_information()
 
-    def get_fufilment_info(self):
+    def get_fufilment_info(self) -> None:
         print(f"Digital Product is delivered digitally via download.")
