@@ -36,11 +36,13 @@ class Inventory:
         if not self._products:
             print("\nNo products found in the inventory.")
             return
-        print("\nCurrent Inventory")
-        print("-" * 50)
+        print("\n" + "=" * 30)
+        print("Current Inventory")
+        print("=" * 30)
         for product in self._products:
+            print("-" * 100)
             if isinstance(product, PhysicalProduct):
                 product.display_information()
             elif isinstance(product, DigitalProduct):
                 product.display_information()
-        print("-" * 50)
+            print("-" * 100)
