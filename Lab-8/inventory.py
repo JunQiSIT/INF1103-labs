@@ -8,7 +8,7 @@ class Inventory:
     # Class initialization
     def __init__(self):
         from oop_inventory_manager import load_inventory
-        self._products = load_inventory() or []
+        self._products: list[Product] = load_inventory() or []
 
     # Add new product to inventory
     def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None, supplier: Supplier):
