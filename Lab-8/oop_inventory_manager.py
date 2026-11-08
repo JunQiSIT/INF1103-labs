@@ -11,6 +11,7 @@ from physicalproduct import PhysicalProduct
 from digitalproduct import DigitalProduct
 from inventory import Inventory
 from supplier import Supplier
+from order import Order
 
 # Functions
 # Menu for user to select
@@ -21,14 +22,15 @@ def inventory_menu():
         print("2. Add Product")
         print("3. Update Stock")
         print("4. Remove Product")
-        print("5. Search Product")
-        print("6. Save Inventory")
-        print("7. Exit")
+        print("5. Order Product")
+        print("6. Search Product")
+        print("7. Save Inventory")
+        print("8. Exit")
         print("--------------------")
 
-        user_input = input("Enter your choice (1-7): ")
-        if not user_input.isdigit() or int(user_input) < 1 or int(user_input) > 7:
-            print("\nInvalid choice. Please select a number between 1 and 7.")
+        user_input = input("Enter your choice (1-8): ")
+        if not user_input.isdigit() or int(user_input) < 1 or int(user_input) > 8:
+            print("\nInvalid choice. Please select a number between 1 and 8.")
             continue
         else:
             return int(user_input)
@@ -135,6 +137,27 @@ def main():
                 product_id = int(input("Enter Product ID to remove: "))
                 inventory.remove_product(product_id)
             case 5:
+                print("\nOrder Product")
+                order_id_list = []
+                order_id = int(input("Enter Order ID: "))
+                while True:
+                    prod_id = input("Enter Product ID of product to order (q to quit): ")
+                    if prod_id == 'q':
+                        break
+                    else:
+                        order_id_list.append(prod_id)
+
+                order = Order(order_id)
+                for prod_id in order_id_list:
+                    order_product = inventory.search_product(int(prod_id))
+                    if order_product:
+                        order.add_order_line(order_product, order_product.quantity)
+                    else:
+                        print(f"\nProduct of product ID {prod_id} not found.")
+                total_cost = order.calculate_total()
+                print("Total cost of the order: ${:.2f}".format(total_cost))
+                    
+            case 6:
                 print("\nSearch Product")
                 search_id = int(input("Enter Product ID: "))
                 found = inventory.search_product(search_id)
@@ -159,9 +182,9 @@ def main():
                     print("-" * 30)
                 else:
                     print("\nProduct not found.")
-            case 6:
-                save_inventory(inventory._products)
             case 7:
+                save_inventory(inventory._products)
+            case 8:
                 print("\nSaving inventory before exit...")
                 
                 # Save inventory to file for persistence

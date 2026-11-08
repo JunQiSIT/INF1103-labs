@@ -48,8 +48,5 @@ class Inventory:
         print("=" * 30)
         for product in self._products:
             print("-" * 100)
-            if isinstance(product, PhysicalProduct):
-                product.display_information()
-            elif isinstance(product, DigitalProduct):
-                product.display_information()
+            product.display_information()
             print("-" * 100)
