@@ -20,5 +20,27 @@
         "_supplier_id": 2,
         "_supplier_name": "Egg Farm",
         "_contact_email": "eggfarm@email.com"
+    },
+    {
+        "_product_id": 3,
+        "_product_type": "physical",
+        "_name": "Computer",
+        "_price": 10.0,
+        "_quantity": 1,
+        "_weight": 12.0,
+        "_supplier_id": 3,
+        "_supplier_name": "jq",
+        "_contact_email": "jq@email.com"
+    },
+    {
+        "_product_id": 4,
+        "_product_type": "digital",
+        "_name": "pictures",
+        "_price": 1.0,
+        "_quantity": 12,
+        "_download_size": 100.0,
+        "_supplier_id": 4,
+        "_supplier_name": "pic",
+        "_contact_email": "pic@email.com"
     }
 ]

@@ -80,8 +80,9 @@ def save_inventory(running_inventory_data):
             prod_dict["_contact_email"] = None
 
         save_data.append(prod_dict)
+    
+    # Serialize products to dictionaries before saving
     with open(INVENTORY_FILEPATH, "w") as f: 
-        # Serialize products to a list of dictionaries before saving
         json.dump(save_data, f, indent=4)
     print("Inventory saved Successfully to inventory.json")
     return
@@ -136,6 +137,7 @@ def main():
                 if found:
                     print("\nProduct found:")
                     print("-" * 30)
+                    print("Product info")
                     print(f"ID: {found.product_id}")
                     print(f"Type: {found.product_type}")
                     print(f"Name: {found.name}")
@@ -145,6 +147,10 @@ def main():
                         print(f"Weight: {found.weight}kg")
                     elif isinstance(found, DigitalProduct):
                         print(f"Download Size: {found.download_size}MB")
+                    print("\nSupplier info")
+                    print(f"Supplier ID: {found._supplier._supplier_id}")
+                    print(f"Supplier Name: {found._supplier._supplier_name}")
+                    print(f"Contact Email: {found._supplier._contact_email}")
                     print("-" * 30)
                 else:
                     print("\nProduct not found.")
