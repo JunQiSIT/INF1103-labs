@@ -20,14 +20,15 @@ def inventory_menu():
         print("1. Display All Products")
         print("2. Add Product")
         print("3. Update Stock")
-        print("4. Search Product")
-        print("5. Save Inventory")
-        print("6. Exit")
+        print("4. Remove Product")
+        print("5. Search Product")
+        print("6. Save Inventory")
+        print("7. Exit")
         print("--------------------")
 
-        user_input = input("Enter your choice (1-6): ")
-        if not user_input.isdigit() or int(user_input) < 1 or int(user_input) > 6:
-            print("\nInvalid choice. Please select a number between 1 and 6.")
+        user_input = input("Enter your choice (1-7): ")
+        if not user_input.isdigit() or int(user_input) < 1 or int(user_input) > 7:
+            print("\nInvalid choice. Please select a number between 1 and 7.")
             continue
         else:
             return int(user_input)
@@ -130,6 +131,10 @@ def main():
                 else:
                     print("\nProduct not found.")
             case 4:
+                print("\nRemove Product")
+                product_id = int(input("Enter Product ID to remove: "))
+                inventory.remove_product(product_id)
+            case 5:
                 print("\nSearch Product")
                 search_id = int(input("Enter Product ID: "))
                 found = inventory.search_product(search_id)
@@ -154,9 +159,9 @@ def main():
                     print("-" * 30)
                 else:
                     print("\nProduct not found.")
-            case 5:
-                save_inventory(inventory._products)
             case 6:
+                save_inventory(inventory._products)
+            case 7:
                 print("\nSaving inventory before exit...")
                 
                 # Save inventory to file for persistence

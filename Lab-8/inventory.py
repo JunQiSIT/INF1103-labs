@@ -31,6 +31,13 @@ class Inventory:
                 return product
         return None
 
+    def remove_product(self, product_id: int):
+        product_remove = self.search_product(product_id)
+        if product_remove:
+            self._products.remove(product_remove)
+            print(f"Product ID {product_id} removed successfully.")
+        else:
+            print(f"Product ID {product_id} not found in the inventory.")
     # Display all inventory items within file
     def display_all(self):
         if not self._products:
