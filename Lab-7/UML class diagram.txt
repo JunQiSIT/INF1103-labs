@@ -6,7 +6,7 @@
 +-----------------------------------------------------------------+
                                 ^
                                 :
-                                : (Interface Realisation: dashed line + hollow triangle)[cite: 6]
+                                : (Interface Realisation: dashed line + hollow triangle)
                                 :
 +-------------------------------+       +---------------------------------+
 |        PhysicalProduct        |       |         DigitalProduct          |
@@ -20,7 +20,7 @@
 +-------------------------------+       +---------------------------------+
              |                                       |
              +-------------------+-------------------+
-                                 | (Generalisation: solid line + hollow triangle)[cite: 6]
+                                 | (Generalisation: solid line + hollow triangle)
                                  |
                                  v
 +-----------------------------------------------------------------+
