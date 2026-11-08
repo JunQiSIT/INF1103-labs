@@ -31,5 +31,27 @@
         "_supplier_id": 3,
         "_supplier_name": "jq",
         "_contact_email": "jq@email.com"
+    },
+    {
+        "_product_id": 4,
+        "_product_type": "physical",
+        "_name": "iphone",
+        "_price": 999.0,
+        "_quantity": 10,
+        "_weight": 10.0,
+        "_supplier_id": 4,
+        "_supplier_name": "apple",
+        "_contact_email": "apple@email.com"
+    },
+    {
+        "_product_id": 5,
+        "_product_type": "digital",
+        "_name": "video",
+        "_price": 10.0,
+        "_quantity": 10,
+        "_download_size": 10.0,
+        "_supplier_id": 5,
+        "_supplier_name": "video",
+        "_contact_email": "video@email.com"
     }
 ]
