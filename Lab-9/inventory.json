@@ -53,5 +53,27 @@
         "_supplier_id": 5,
         "_supplier_name": "video",
         "_contact_email": "video@email.com"
+    },
+    {
+        "_product_id": 6,
+        "_product_type": "physical",
+        "_name": "hd",
+        "_price": 90.0,
+        "_quantity": 90,
+        "_weight": 1.0,
+        "_supplier_id": 6,
+        "_supplier_name": "hd",
+        "_contact_email": "hd@email.com"
+    },
+    {
+        "_product_id": 7,
+        "_product_type": "digital",
+        "_name": "gif",
+        "_price": 1.0,
+        "_quantity": 1000,
+        "_download_size": 10.0,
+        "_supplier_id": 7,
+        "_supplier_name": "gif",
+        "_contact_email": "gif@email.com"
     }
 ]

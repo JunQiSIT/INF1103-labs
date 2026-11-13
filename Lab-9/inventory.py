@@ -2,6 +2,7 @@ from physicalproduct import PhysicalProduct
 from digitalproduct import DigitalProduct
 from product import Product
 from supplier import Supplier
+from productfactory import ProductFactory
 
 # Inventory class to manage the collection of products
 class Inventory:
@@ -14,13 +15,12 @@ class Inventory:
     def add_product(self, prod_type: str, name: str, price: float, quantity: int, weight: float | None, download_size: float | None, supplier: Supplier) -> None:
         # Create a new Product instance and add it to the running inventory
         prod_id = len(self._products) + 1
-        if prod_type == "physical":
-            new_product = PhysicalProduct(prod_id, prod_type, name, price, quantity, weight, supplier)
-            new_product.get_fufilment_info()
+        new_product = ProductFactory.create(prod_type, prod_id, name, price, quantity, supplier, weight=weight, download_size=download_size)
+        new_product.get_fufilment_info()
+
+        if isinstance(new_product, PhysicalProduct):
             new_product.calculate_shipping_cost()
-        else:
-            new_product = DigitalProduct(prod_id, prod_type, name, price, quantity, download_size, supplier)
-            new_product.get_fufilment_info()
+
         self._products.append(new_product)
         print("Product added successfully!")
 
