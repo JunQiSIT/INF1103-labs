@@ -105,6 +105,7 @@ def main():
         match user_choice:
             case 1:
                 inventory.display_all()
+            
             case 2:
                 print("\nAdd New Product")
                 while True:
@@ -126,6 +127,7 @@ def main():
                 else:
                     download_size = float(input("Enter digital file size (MB): "))
                     inventory.add_product(product_type, name, price, quantity, None, download_size, supplier)
+            
             case 3:
                 print("\nUpdate Stock")
                 product_id = int(input("Enter Product ID: "))
@@ -135,10 +137,12 @@ def main():
                     found_product.update_stock(new_quantity)
                 else:
                     print("\nProduct not found.")
+            
             case 4:
                 print("\nRemove Product")
                 product_id = int(input("Enter Product ID to remove: "))
                 inventory.remove_product(product_id)
+            
             case 5:
                 print("\nOrder Product")
                 order_id_list = []
@@ -180,8 +184,8 @@ def main():
                     order.set_discount(NoDiscount())
 
                 total_cost = order.calculate_total()
-                print(f"Total cost of the order: ${total_cost:.2f}")
-                    
+                print(f"Total cost of the order: ${total_cost:.2f}")                
+            
             case 6:
                 print("\nSearch Product")
                 search_id = int(input("Enter Product ID: "))
@@ -209,6 +213,7 @@ def main():
                     print("\nProduct not found.")
             case 7:
                 save_inventory(inventory._products)
+            
             case 8:
                 print("\nSaving inventory before exit...")
                 
