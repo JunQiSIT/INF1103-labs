@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import csv
 
 # Constants
 INVENTORY_FILEPATH = Path(__file__).parent / "inventory.json"
@@ -15,6 +16,7 @@ from nodiscount import NoDiscount
 from percentagediscount import PercentageDiscount
 from bulkdiscount import BulkDiscount
 from studentdiscount import StudentDiscount
+from productfactory import ProductFactory
 
 # Functions
 # Get a positive float input from the user
@@ -88,7 +90,8 @@ def inventory_menu():
         print("5. Order Product")
         print("6. Search Product")
         print("7. Save Inventory")
-        print("8. Exit")
+        print("8. Load Products from CSV")
+        print("9. Exit")
         print("--------------------")
 
         user_input = input("Enter your choice (1-8): ")
@@ -98,7 +101,7 @@ def inventory_menu():
         else:
             return int(user_input)
 
-# Load inventory from file
+# Load inventory from json file
 def load_inventory():
     # Creates the inventory.json file if it does not exist
     try:
@@ -122,6 +125,41 @@ def load_inventory():
         print("\nInventory file not found. Please ensure the inventory.json file exists.")
     except json.JSONDecodeError:
         print("\nError decoding JSON from the inventory file. Please check the file format.")
+
+def load_inventory_csv(path: str, inventory: Inventory, supplier: Supplier) -> None:
+    try:
+        file = open(path, newline="")
+    except FileNotFoundError:
+        print(f"Products file not found: {path}")
+    else:
+        loaded = 0
+        with file:
+            reader = csv.reader(file)
+            next(reader, None)  # Skip the header row
+
+            for row_num, row in enumerate(reader, start=2):
+                if not row:
+                    continue
+                try:
+                    product_type, product_id, name, price_str, stock_str = row
+                    price = float(price_str)
+                    stock_quantity = int(stock_str)
+
+                    product = ProductFactory.create(
+                        product_type=product_type.strip(),
+                        product_id=product_id.strip(),
+                        name=name.strip(),
+                        price=price,
+                        stock_quantity=stock_quantity,
+                        supplier=supplier,
+                    )
+                    inventory._products.append(product)
+                    loaded += 1
+                except ValueError as e:
+                    print(f"Skipping invalid row {row_num} ({row}): {e}")
+        print(f"{loaded} products loaded.")
+    finally:
+        print("Load attempt finished.")
 
 # Save inventory to file for persistence
 def save_inventory(running_inventory_data):
@@ -281,6 +319,18 @@ def main():
                 save_inventory(inventory._products)
             
             case 8:
+                print("\nLoad Products from CSV")
+                csv_filename = input("Enter CSV filename (press Enter for 'products.csv'): ").strip()
+                csv_path = Path(__file__).parent / (csv_filename if csv_filename else "products.csv")
+
+                supplier_name = input("Enter default supplier name for imported products: ").strip() or "Default Supplier"
+                supplier_email = input("Enter default supplier email: ").strip() or "supplier@example.com"
+                supplier = Supplier(len(inventory._products) + 1, supplier_name, supplier_email)
+
+                load_inventory_csv(csv_path, inventory, supplier)
+                save_inventory(inventory._products)
+            
+            case 9:
                 print("\nSaving inventory before exit...")
                 
                 # Save inventory to file for persistence
