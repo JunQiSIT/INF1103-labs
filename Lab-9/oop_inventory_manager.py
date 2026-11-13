@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Any
 import json
 
 # Constants
@@ -15,6 +14,7 @@ from order import Order
 from nodiscount import NoDiscount
 from percentagediscount import PercentageDiscount
 from bulkdiscount import BulkDiscount
+from studentdiscount import StudentDiscount
 
 # Functions
 # Menu for user to select
@@ -160,18 +160,22 @@ def main():
 
                 # Select and apply DiscountStrategy
                 print("\nSelect Discount Strategy:")
-                print("1. No Discount")
-                print("2. Percentage Discount")
-                print("3. Bulk Discount")
+                print("1. Percentage Discount")
+                print("2. Bulk Discount")
+                print("3. Student Discount")
+                print("No selection, default: No Discount")
                 discount_choice = input("Enter choice (1-3): ").strip()
 
-                if discount_choice == "2":
+                if discount_choice == "1":
                     percentage = float(input("Enter discount percentage (e.g., 10 for 10%): "))
                     order.set_discount(PercentageDiscount(percentage))
-                elif discount_choice == "3":
+                elif discount_choice == "2":
                     threshold = float(input("Enter minimum order threshold (e.g., 200): "))
                     amount = float(input("Enter discount amount (e.g., 20): "))
                     order.set_discount(BulkDiscount(threshold, amount))
+                elif discount_choice == "3":
+                    student_discount_rate = float(input("Enter student discount rate (e.g., 15 for 15%): "))
+                    order.set_discount(StudentDiscount(student_discount_rate))
                 else:
                     order.set_discount(NoDiscount())
 
