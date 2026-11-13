@@ -17,6 +17,66 @@ from bulkdiscount import BulkDiscount
 from studentdiscount import StudentDiscount
 
 # Functions
+# Get a positive float input from the user
+def get_positive_float(prompt: str) -> float:
+    """_summary_
+        Helper function to get a positive float input from the user.
+    Args:
+        prompt (str): The prompt message to display to the user.
+
+    Returns:
+        float: A positive float value entered by the user.
+    """
+    while True:
+        try:
+            value = float(input(prompt))
+            if value <= 0:
+                print("Please enter a number greater than zero.")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid number, e.g. 12.50")
+
+# Get a non-negative integer input from the user
+def get_non_negative_int(prompt: str) -> int:
+    """_summary_
+        Helper function to get a non-negative integer input from the user.
+    Args:
+        prompt (str): The prompt message to display to the user.
+
+    Returns:
+        int: A non-negative integer value entered by the user.
+    """
+    while True:
+        try:
+            value = int(input(prompt))
+            if value < 0:
+                print("Please enter a number that is zero or greater.")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid whole number, e.g. 10")
+
+# Get a positive integer input from the user
+def get_positive_int(prompt: str) -> int:
+    """_summary_
+        Helper function to get a positive integer input from the user.
+    Args:
+        prompt (str): The prompt message to display to the user.
+
+    Returns:
+        int: A positive integer value entered by the user.
+    """
+    while True:
+        try:
+            value = int(input(prompt))
+            if value <= 0:
+                print("Please enter a whole number greater than zero.")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid whole number, e.g. 1")
+
 # Menu for user to select
 def inventory_menu():
     while True:
@@ -112,29 +172,35 @@ def main():
                     product_type = input("Enter product type (physical/digital): ").strip().lower()
                     if product_type in ["physical", "digital"]:
                         break
-                    else:
-                        print("Invalid product type. Please enter 'physical' or 'digital'.")
-                name = input("Enter product name: ")
-                price = float(input("Enter product price: "))
-                quantity = int(input("Enter product quantity: "))
-                supplier_name = input("Enter supplier name: ")
-                supplier_email = input("Enter supplier contact email: ")
+                    print("Invalid product type. Please enter 'physical' or 'digital'.")
+
+                name = input("Enter product name: ").strip()
+                price = get_positive_float("Enter product price: ")
+                quantity = get_non_negative_int("Enter product quantity: ")
+                supplier_name = input("Enter supplier name: ").strip()
+                supplier_email = input("Enter supplier contact email: ").strip()
                 supplier = Supplier(len(inventory._products) + 1, supplier_name, supplier_email)
 
-                if product_type == "physical":
-                    weight = float(input("Enter product weight (kg): "))
-                    inventory.add_product(product_type, name, price, quantity, weight, None, supplier)
-                else:
-                    download_size = float(input("Enter digital file size (MB): "))
-                    inventory.add_product(product_type, name, price, quantity, None, download_size, supplier)
-            
+                try:
+                    if product_type == "physical":
+                        weight = get_positive_float("Enter product weight (kg): ")
+                        inventory.add_product(product_type, name, price, quantity, weight, None, supplier)
+                    else:
+                        download_size = get_positive_float("Enter digital file size (MB): ")
+                        inventory.add_product(product_type, name, price, quantity, None, download_size, supplier)
+                except ValueError as e:
+                    print(f"Error: {e}")
+
             case 3:
                 print("\nUpdate Stock")
-                product_id = int(input("Enter Product ID: "))
+                product_id = get_positive_int("Enter Product ID: ")
                 found_product = inventory.search_product(product_id)
                 if found_product:
-                    new_quantity = int(input("New Stock Quantity: "))
-                    found_product.update_stock(new_quantity)
+                    new_quantity = get_non_negative_int("New Stock Quantity: ")
+                    try:
+                        found_product.update_stock(new_quantity)
+                    except ValueError as e:
+                        print(f"Error: {e}")
                 else:
                     print("\nProduct not found.")
             
