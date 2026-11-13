@@ -7,5 +7,5 @@ class BulkDiscount(DiscountStrategy):
 
     def apply(self, total: float) -> float:
         if total >= self._threshold:
-            return total * (1 - self._discount_rate)
+            return total * (100 - self._discount_rate) / 100
         return total

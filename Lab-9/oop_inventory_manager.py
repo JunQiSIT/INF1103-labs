@@ -12,6 +12,9 @@ from digitalproduct import DigitalProduct
 from inventory import Inventory
 from supplier import Supplier
 from order import Order
+from nodiscount import NoDiscount
+from percentagediscount import PercentageDiscount
+from bulkdiscount import BulkDiscount
 
 # Functions
 # Menu for user to select
@@ -139,7 +142,7 @@ def main():
             case 5:
                 print("\nOrder Product")
                 order_id_list = []
-                order_id = int(input("Enter Order ID: "))
+                order_id = input("Enter Order ID: ")
                 while True:
                     prod_id = input("Enter Product ID of product to order (q to quit): ")
                     if prod_id == 'q':
@@ -154,8 +157,26 @@ def main():
                         order.add_order_line(order_product, order_product.quantity)
                     else:
                         print(f"\nProduct of product ID {prod_id} not found.")
+
+                # Select and apply DiscountStrategy
+                print("\nSelect Discount Strategy:")
+                print("1. No Discount")
+                print("2. Percentage Discount")
+                print("3. Bulk Discount")
+                discount_choice = input("Enter choice (1-3): ").strip()
+
+                if discount_choice == "2":
+                    percentage = float(input("Enter discount percentage (e.g., 10 for 10%): "))
+                    order.set_discount(PercentageDiscount(percentage))
+                elif discount_choice == "3":
+                    threshold = float(input("Enter minimum order threshold (e.g., 200): "))
+                    amount = float(input("Enter discount amount (e.g., 20): "))
+                    order.set_discount(BulkDiscount(threshold, amount))
+                else:
+                    order.set_discount(NoDiscount())
+
                 total_cost = order.calculate_total()
-                print("Total cost of the order: ${:.2f}".format(total_cost))
+                print(f"Total cost of the order: ${total_cost:.2f}")
                     
             case 6:
                 print("\nSearch Product")
