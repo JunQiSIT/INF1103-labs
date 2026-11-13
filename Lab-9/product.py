@@ -8,6 +8,11 @@ from supplier import Supplier
 class Product(ABC):
     # Class initialization
     def __init__(self, product_id: int, product_type: str, name: str, price: float, quantity: int, supplier: Supplier):
+        if price <= 0:
+            raise ValueError("Product price must be greater than zero.")
+        if quantity < 0:
+            raise ValueError("Product stock quantity cannot be negative.")
+
         self._product_id = product_id
         self._product_type = product_type
         self._name = name
@@ -40,6 +45,8 @@ class Product(ABC):
     # Setters
     @quantity.setter
     def quantity(self, new_quantity: int):
+        if new_quantity < 0:
+            raise ValueError("Product stock quantity cannot be negative.")
         self._quantity = new_quantity
 
     # Class method
@@ -71,6 +78,9 @@ class Product(ABC):
 
     # Update stock of existing product
     def update_stock(self, new_quantity: int) -> None:
+        if new_quantity < 0:
+            raise ValueError("Product stock quantity cannot be negative.")
+
         print("\nProduct found:")
         print("-" * 30)
         print(f"Name: {self._name}")
