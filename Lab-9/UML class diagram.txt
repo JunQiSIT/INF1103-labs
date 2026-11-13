@@ -1,0 +1,115 @@
+                                     +-----------------------------------+
+                                     |           <<interface>>           |
+                                     |           CanBeShipped            |
+                                     +-----------------------------------+
+                                     | + calculate_shipping_cost()*      |
+                                     |   : void                          |
+                                     +-----------------------------------+
+                                                       ^
+                                                       :
+                                                       : (Interface Realisation: dashed line + hollow triangle)
+                                                       :
+         +---------------------------------------------+-------------+
+         |                                                           |
++---------------------------------------+       +-----------------------------------+
+|            PhysicalProduct            |       |          DigitalProduct           |
++---------------------------------------+       +-----------------------------------+
+| # _weight : float                     |       | # _download_size : float          |
++---------------------------------------+       +-----------------------------------+
+| + weight() : float                    |       | + download_size() : float         |
+| + display_information() : void        |       | + display_information() : void    |
+| + get_fufilment_info() : void         |       | + get_fufilment_info() : void     |
+| + calculate_shipping_cost() : void    |       +-----------------------------------+
++---------------------------------------+                         |
+                    |                                             |
+                    +----------------------+----------------------+
+                                           | (Generalisation: solid line + hollow triangle)
+                                           v
++-----------------------------------------------------------------------------------+
+|                                   <<abstract>>                                    |
+|                                     Product                                       |
++-----------------------------------------------------------------------------------+
+| # _product_id : int | str                                                         |
+| # _product_type : str                                                             |
+| # _name : str                                                                     |
+| # _price : float                                                                  |
+| # _quantity : int                                                                 |
+| # _supplier : Supplier                                                            |
++-----------------------------------------------------------------------------------+
+| + product_id() : int | str                  <<property getter>>                   |
+| + product_type() : str                      <<property getter>>                   |
+| + name() : str                              <<property getter>>                   |
+| + price() : float                           <<property getter>>                   |
+| + quantity() : int                          <<property getter>>                   |
+| + quantity(new_quantity: int)               <<property setter>>                   |
+| + from_dict(data: dict[str, Any]) : Product <<classmethod>>                       |
+| + update_stock(new_quantity: int) : void                                          |
+| + display_information() : str                                                     |
+| + get_fufilment_info()* : void              <<abstract method>>                   |
++-----------------------------------------------------------------------------------+
+       ^                      ^                      ^                       ^
+       |                      :                      |                       |
+  0..* |                      : (Dependency)         | 1                     | 0..*
+       | (Aggregation)        :                      | (Aggregation)         | (Association)
+  0..1 |                      :                 0..* |                       | 1
++--------------+   +---------------------+   +---------------+       +---------------+
+|  Inventory   |   |   ProductFactory    |   |   OrderLine   |       |   Supplier    |
++--------------+   +---------------------+   +---------------+       +---------------+
+| # _products  |   +---------------------+   | + product     |       | # _supplier_  |
+|   : list     |   | + create(           |   |   : Product   |       |   id : int    |
+|   [Product]  |   |   product_type,     |   | + quantity    |       | # _supplier_  |
++--------------+   |   product_id,       |   |   : int       |       |   name : str  |
+| + add_       |   |   name, price,      |   +---------------+       | # _contact_   |
+|   product()  |   |   stock_quantity,   |   | + calculate_  |       |   email : str |
+| + search_    |   |   supplier,         |   |   subtotal()  |       +---------------+
+|   product()  |   |   weight,           |   |   : float     |       | + supplier_   |
+| + remove_    |   |   download_size     |   +---------------+       |   id() : int  |
+|   product()  |   |   ) : Product       |           ^               | + supplier_   |
+| + display_   |   |   <<static>>        |      0..* |               |   name():str  |
+|   all()      |   +---------------------+           | (Composition) | + contact_    |
++--------------+              ^                 1    |               |   email():str |
+       |                      :              +---------------+       | + display_    |
+       + - - - - - - - - - - -+              |     Order     |       |   info():void |
+            (Dependency)                     +---------------+       +---------------+
+                                             | + order_id    |
+                                             |   : str       |
+                                             | + order_lines |
+                                             |   : list      |
+                                             |   [OrderLine] |
+                                             | + discount    |
+                                             |   : Discount  |
+                                             |   Strategy    |
+                                             +---------------+
+                                             | + add_order_  |
+                                             |   line()      |
+                                             | + set_        |
+                                             |   discount()  |
+                                             | + calculate_  |
+                                             |   total()     |
+                                             +---------------+
+                                                     |
+                                                0..* |
+                                                     | (Association)
+                                                1    |
+                                                     v
+                                   +-----------------------------------+
+                                   |           <<abstract>>            |
+                                   |         DiscountStrategy          |
+                                   +-----------------------------------+
+                                   | + apply(total: float)* : float    |
+                                   +-----------------------------------+
+                                                     ^
+                                                     | (Generalisation: solid line + hollow triangle)
+         +-----------------------+-------------------+-------------------+-----------------------+
+         |                       |                                       |                       |
++-----------------+   +-----------------------+             +-----------------------+   +-----------------------+
+|   NoDiscount    |   |  PercentageDiscount   |             |     BulkDiscount      |   |    StudentDiscount    |
++-----------------+   +-----------------------+             +-----------------------+   +-----------------------+
++-----------------+   | # _discount_rate      |             | # _threshold : float  |   | + discount_rate       |
+| + apply(        |   |   : float             |             | # _discount_rate      |   |   : float             |
+|   total: float) |   +-----------------------+             |   : float             |   +-----------------------+
+|   : float       |   | + apply(              |             +-----------------------+   | + apply(              |
++-----------------+   |   total: float)       |             | + apply(              |   |   total: float)       |
+                      |   : float             |             |   total: float)       |   |   : float             |
+                      +-----------------------+             |   : float             |   +-----------------------+
+                                                            +-----------------------+

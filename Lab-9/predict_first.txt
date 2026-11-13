@@ -1,0 +1,44 @@
+Predict first: The business now wants a 5% student discount. Without the Strategy pattern, which class and method must change? After you complete Section 2, answer the same question again for your Strategy version.
+
+Ans: We will need to modify the order class to change the discount rate
+
+
+Predict first: Create an order whose lines add up to 250. What will calculate_total() return with BulkDiscount(200, 20)? What if you then call set_discount(PercentageDiscount(10)) on the same order? Write both answers down, then run your code and check.
+
+Ans: 230 and 225
+
+
+Predict first: Look back at Lab 8. Which relationship best describes Order and DiscountStrategy: association, aggregation or composition? Hint: is a discount part of an order, or something the order uses? Could two orders share the same PercentageDiscount object? Write your answer and a multiplicity for each end, then check it against your code.
+
+Ans: association, discount strategy not part of an order, it is independent and Order uses it as a reference. Multiplicity: Order 0..* -- 1
+
+
+Predict first: What happens if you call ProductFactory.create("service", ...)? Which line raises the exception, and what happens to your program if nothing catches it? Run it and check. 
+
+Ans: The line with the exception raised, if nothing catches it will not create any product object and throw an error further down in the code
+
+
+Predict first: Suppose a new BundleProduct type is added. How many places in your code would need to change before you added the factory, and how many after? Count them, then explain why the factory still breaks OCP and why that is acceptable here.
+
+Ans: Everywhere products are instantiated, after factory only 1 place in the create method
+
+
+Predict first: Think back to the Lab 8 LSP discussion. If Product validates that stock cannot go negative, should DigitalProduct be allowed to skip or change that rule? Why?
+
+Ans: No, any subclass under the parent is expected without breaking contracts or invariants
+
+
+Predict first: A user enters abc, then -5, then 12.50. Write down exactly what prints after each entry and what value is returned. Then run it and check.
+
+Ans: Valueerror raised, please enter a number greater then zero, nothing prints since input is accepted value 12.50 is returned
+
+
+Predict first: Before running, write down how many products will load, which messages will print, and in what order. Then rename products.csv and predict again: which of except, else and finally will run? 
+
+Ans: 
+3 will load, output printed
+Skipping invalid row 4 (['service', 'S001', 'Installation', '30.00', '5 ']): Unknown product type: service
+Skipping invalid row 5 (['physical', 'P002', 'Office Chair', 'abc', '3 ']): could not convert string to float: 'abc'
+3 products loaded
+
+except and finally block runs if renamed file
